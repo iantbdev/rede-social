@@ -54,7 +54,7 @@ const Login = () => {
             <input
               type="password"
               placeholder="Password"
-              name="password"
+              name="senha"
               onChange={handleChange}
             />
             {err && err}
