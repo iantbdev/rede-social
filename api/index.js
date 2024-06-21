@@ -6,6 +6,7 @@ import commentsRoutes from "./routes/comments.js";
 import authRoutes from "./routes/auth.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import multer from "multer";
 const app = express();
 
 //middlewares
@@ -20,6 +21,22 @@ app.use(
   })
 );
 app.use(cookieParser());
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../client/public/upload");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post("/api/upload", upload.single("file"), (req, resp) => {
+  const file = req.file;
+  resp.status(200).send(file.filename);
+});
 
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postsRoutes);
