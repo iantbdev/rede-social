@@ -1,41 +1,61 @@
-const db = require('../connect');
+import { db } from "../connect.js";
+import jwt from "jsonwebtoken";
+import moment from "moment";
+import multer from "multer";
 
-exports.uploadMusic = (req, res) => {
-  const { genero_musical, compositor, nome, usuario_id } = req.body;
-  const musicPath = req.file.path;
+// Configurar o armazenamento do Multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
 
-  // Primeiro, criar uma nova postagem
-  const createPostQuery = 'INSERT INTO postagem (data) VALUES (CURDATE())';
-  
-  db.query(createPostQuery, (err, result) => {
-    if (err) {
-      console.error('Error creating post:', err);
-      return res.status(500).json({ error: 'Unable to create post' });
-    }
+export const upload = multer({ storage: storage }); // Exportar o middleware do Multer
 
-    const postagem_id = result.insertId;
+export const uploadMusic = (req, resp) => {
+  const token = req.cookies.accessToken;
+  if (!token) return resp.status(401).send("Não está logado.");
 
-    // Em seguida, inserir a música associada à postagem
-    const musicQuery = 'INSERT INTO musica (genero_musical, compositor, nome, postagem_id) VALUES (?, ?, ?, ?)';
-    const musicValues = [genero_musical, compositor, nome, postagem_id];
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return resp.status(403).send("Token não é válido.");
 
-    db.query(musicQuery, musicValues, (err, result) => {
-      if (err) {
-        console.error('Error saving music to the database:', err);
-        return res.status(500).json({ error: 'Unable to save music' });
-      }
+    // primeira consulta: inserir na tabela 'postagem'
+    const q1 = `INSERT INTO postagem (data) VALUES (?)`;
+    const postData = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
 
-      // Associar a postagem ao usuário que a fez
-      const userPostQuery = 'INSERT INTO usuario_posta_postagem (usuario_id, postagem_id_postagem, conteudo, link) VALUES (?, ?, ?, ?)';
-      const userPostValues = [usuario_id, postagem_id, nome, musicPath];
+    db.query(q1, [postData], (err, result) => {
+      if (err) return resp.status(500).send(err);
 
-      db.query(userPostQuery, userPostValues, (err, result) => {
-        if (err) {
-          console.error('Error associating post with user:', err);
-          return res.status(500).json({ error: 'Unable to associate post with user' });
-        }
+      const postagemId = result.insertId;
 
-        res.status(201).json({ id: postagem_id, genero_musical, compositor, nome, musicPath });
+      // segunda consulta: inserir na tabela 'musica'
+      const q2 = `INSERT INTO musica (genero_musical, compositor, nome, postagem_id) VALUES (?, ?, ?, ?)`;
+      const musicValues = [
+        req.body.genero_musical,
+        req.body.compositor,
+        req.body.nome,
+        postagemId
+      ];
+
+      db.query(q2, musicValues, (err, data) => {
+        if (err) return resp.status(500).send(err);
+
+        // terceira consulta: inserir na tabela 'usuario_posta_postagem'
+        const q3 = `INSERT INTO usuario_posta_postagem (conteudo, link, usuario_id, postagem_id_postagem) VALUES (?, ?, ?, ?)`;
+        const postValues = [
+          req.body.conteudo,
+          req.file.path,
+          userInfo.id,
+          postagemId
+        ];
+
+        db.query(q3, postValues, (err, data) => {
+          if (err) return resp.status(500).send(err);
+          return resp.status(200).send("Música carregada e post criada com sucesso!");
+        });
       });
     });
   });
