@@ -7,11 +7,11 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
 import { useState } from "react";
+import moment from "moment";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
 
-  //TEMPORARY
   const liked = false;
 
   return (
@@ -22,19 +22,19 @@ const Post = ({ post }) => {
             <img src={post.profilePic} alt="" />
             <div className="details">
               <Link
-                to={`/profile/${post.userId}`}
+                to={`/profile/${post.id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <span className="name">{post.name}</span>
+                <span className="name">{post.nome_completo}</span>
               </Link>
-              <span className="date">1 min ago</span>
+              <span className="date"> {moment(post.data).fromNow()} </span>
             </div>
           </div>
           <MoreHorizIcon />
         </div>
         <div className="content">
-          <p>{post.desc}</p>
-          <img src={post.img} alt="" />
+          <p>{post.conteudo}</p>
+          <img src={"./upload/" + post.link} alt="" />
         </div>
         <div className="info">
           <div className="item">
