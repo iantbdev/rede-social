@@ -9,7 +9,6 @@ export const getPosts = (req, resp) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return resp.status(403).send("Token não é válido.");
     
-
     // mostra apenas seus posts ou dos seus amigos
     const q = `SELECT 
                 *
@@ -63,3 +62,19 @@ export const addPost = (req, resp) => {
     });
   });
 };
+
+dsdds
+ValidityState
+ValidityState
+visualViewport
+dsdds
+dsdds
+
+db
+
+
+
+db
+
+
+db
