@@ -1,51 +1,60 @@
 import "./share.scss";
-import Image from "../../assets/img.png";
+import Image from "../../assets/4.png";
 import Map from "../../assets/map.png";
 import Friend from "../../assets/friend.png";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { sendRequest } from "../../axios";
+import MusicPlayer from "../musicPlayer/musicPlayer";
 
 const Share = () => {
   const [file, setFile] = useState(null);
-  const [cont, setCont] = useState("");
+  const [content, setContent] = useState("");
+  const [error, setError] = useState(""); // Added state for error handling
   const { currentUser } = useContext(AuthContext);
   const queryClient = useQueryClient();
 
-  const upload = async () => {
+  const uploadFile = async () => {
+    if (!file) return "";
+    console.log(file); // Return empty string if no file to upload
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const resp = await sendRequest.post("/upload", formData);
-      return resp.data;
+      const response = await sendRequest.post("/upload", formData);
+      return response.data; // Assuming the URL of the song is in the 'data' field
     } catch (err) {
-      console.log(err);
+      console.error("Upload failed:", err);
+      setError("Failed to upload file."); // Update error state
+      return ""; // Return an empty string to indicate failure
     }
   };
 
-  const handleClick = async (e) => {
+  const handleShareClick = async (e) => {
     e.preventDefault();
-    let imgUrl = "";
-    if (file) imgUrl = await upload();
-
+    setError(""); // Reset error state
+    let songUrl = await uploadFile(); 
+    if (file && !songUrl) return; // Stop execution if the upload failed
+    console.log(songUrl);
     try {
       await sendRequest.post("/posts", {
-        conteudo: cont,
-        link: imgUrl,
+        conteudo: content,
+        link: songUrl,
       });
 
       // Invalidate and refetch posts
       queryClient.invalidateQueries(["posts"]);
-      setCont("");
+      setContent("");
       setFile(null);
     } catch (error) {
-      console.error("Erro ao criar post:", error);
+      console.error("Error creating post:", error);
+      setError("Failed to create post."); // Update error state
     }
   };
 
   return (
     <div className="share">
+      {error && <div className="error">{error}</div>} {/* Display error message if any */}
       <div className="container">
         <div className="top">
           <div className="left">
@@ -57,11 +66,9 @@ const Share = () => {
               value={cont}
             />
           </div>
-          <div className="right">
-            {file && (
-              <img className="file" alt="" src="URL.createObjectURL(file)" />
-            )}
-          </div>
+          {file && (
+            <MusicPlayer playlist_src={URL.createObjectURL(file)}></MusicPlayer>
+          )}
         </div>
         <hr />
         <div className="bottom">
@@ -70,12 +77,12 @@ const Share = () => {
               type="file"
               id="file"
               style={{ display: "none" }}
-              onChange={(e) => setFile(e.target.files[0])} //parte de arquivos
+              onChange={(e) => setFile(e.target.files[0])}
             />
             <label htmlFor="file">
               <div className="item">
                 <img src={Image} alt="" />
-                <span>Add Image</span>
+                <span>Add Music</span>
               </div>
             </label>
             <div className="item">
@@ -88,7 +95,7 @@ const Share = () => {
             </div>
           </div>
           <div className="right">
-            <button onClick={handleClick}>Share</button>
+            <button onClick={handleShareClick}>Share</button>
           </div>
         </div>
       </div>

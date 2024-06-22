@@ -1,14 +1,13 @@
 import React from 'react';
 
-const MusicPlayer = ({playlist_src}) => {
+const MusicPlayer = ({music_src}) => {
 
   return (
-    <div>
-      <audio controls>
-        <source src={playlist_src} type="audio/mp3" />
-        Your browser does not support the audio element.
-      </audio> 
-    </div>
+    <audio controls>
+      <source src={music_src} type="audio/ogg" />
+      <source src={music_src} type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio> 
   );
 };
 

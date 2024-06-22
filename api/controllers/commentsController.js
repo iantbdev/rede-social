@@ -39,7 +39,7 @@ export const addComments = (req, resp) => {
       req.body.postagem_id_postagem,
     ];
 
-    console.log("VALORES DOS COMENTARIOS:", values);
+    //console.log("VALORES DOS COMENTARIOS:", values);
 
     db.query(q2, values, (err, data) => {
       if (err) {

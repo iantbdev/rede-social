@@ -18,44 +18,39 @@ const Post = ({ post }) => {
   const [totalLikes, setTotalLikes] = useState(0);
 
   useEffect(() => {
-    const fetchLikedStatus = async () => {
-      try {
-
-        const response = await sendRequest.get(`/likes/liked/${post.id_postagem}`);
-        if (response.data.length > 0) {
-          setLiked(response.data[0].like);
-        }
-      } catch (error) {
-        console.error('Error fetching liked status:', error);
-      }
-    };
-  
     fetchLikedStatus();
-  }, [post.id_postagem]); 
-
-  useEffect(() => {
-    const fetchLikeAmount = async () => {
-      try {
-
-        const response = await sendRequest.get(`/likes/${post.id_postagem}`);
-        setTotalLikes(prevTotalLikes => prevTotalLikes + response.data);
-      } catch (error) {
-        console.error('Error fetching likes:', error);
-      }
-    };
-  
     fetchLikeAmount();
   }, [post.id_postagem]); 
 
+  const fetchLikedStatus = async () => {
+    try {
+      const response = await sendRequest.get(`/likes/liked/${post.id_postagem}`);
+      if (response.data.length > 0) {
+        setLiked(response.data[0].like);
+      }
+    } catch (error) {
+      console.error('Error fetching liked status:', error);
+    }
+  };
+
+  const fetchLikeAmount = async () => {
+    try {
+      const response = await sendRequest.get(`/likes/${post.id_postagem}`);
+      setTotalLikes(response.data); 
+    } catch (error) {
+      console.error('Error fetching likes:', error);
+    }
+  };
 
   const handleLikeClick = async (e) => {
     e.preventDefault();
     try { 
-      const response = await sendRequest.post('/likes', {
+      await sendRequest.post('/likes', {
         postagem_id: post.id_postagem,
         like: !liked, 
       });
-      setLiked(!liked); 
+      setLiked(!liked);
+      fetchLikeAmount();
     } catch (error) {
       console.error('Error adding like:', error);
     }
@@ -81,7 +76,7 @@ const Post = ({ post }) => {
         </div>
         <div className="content">
           <p>{post.conteudo}</p>
-          {post.link && <MusicPlayer playlist_src={"./upload/" + post.link} />}
+          {post.link && <MusicPlayer music_src={"./upload/" + post.link} />}
           {/* <img src={"./upload/" + post.link} alt="" /> */}
         </div>
         <div className="info">
