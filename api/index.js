@@ -31,7 +31,21 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage
+  // fileFilter: function(req, file, cb) {
+  //   // Allowed audio MIME types
+  //   const filetypes = /audio\/(mpeg|mp3|wav|ogg)/;
+  //   // Check MIME type
+  //   const mimetype = filetypes.test(file.mimetype);
+
+  //   if (mimetype) {
+  //     cb(null, true);
+  //   } else {
+  //     cb(new Error('Only audio files are allowed!'), false);
+  //   }
+  // }
+});
 
 app.post("/api/upload", upload.single("file"), (req, resp) => {
   const file = req.file;

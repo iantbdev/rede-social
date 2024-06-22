@@ -4,8 +4,9 @@ import axios from "axios";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+  // Corrected the localStorage key from "usuario" to "user" for consistency
   const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("usuario")) || null
+    JSON.parse(localStorage.getItem("user")) || null
   );
 
   const login = async (inputs) => {

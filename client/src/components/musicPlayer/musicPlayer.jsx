@@ -1,19 +1,13 @@
 import React from 'react';
 
-const MusicPlayer = () => {
-  const playlistId = '5AvGeWlFv35VnBuiurfiQX';
+const MusicPlayer = ({music_src}) => {
 
   return (
-    <iframe
-      title="Spotify Embed: Recommendation Playlist"
-      src={`https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`}
-      width="100%"
-      height="100%"
-      style={{ minHeight: '360px' }}
-      frameBorder="0"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy"
-    />
+    <audio controls>
+      <source src={music_src} type="audio/ogg" />
+      <source src={music_src} type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio> 
   );
 };
 
