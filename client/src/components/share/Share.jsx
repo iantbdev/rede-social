@@ -61,9 +61,9 @@ const Share = () => {
             <img src={currentUser.profilePic} alt="" />
             <input
               type="text"
-              placeholder={`What are you listening to, ${currentUser.name}?`}
-              onChange={(e) => setContent(e.target.value)}
-              value={content}
+              placeholder={`O que você anda ouvindo, ${currentUser.nome_completo}?`}
+              onChange={(e) => setCont(e.target.value)}
+              value={cont}
             />
           </div>
           {file && (
