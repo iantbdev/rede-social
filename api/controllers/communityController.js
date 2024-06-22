@@ -53,7 +53,7 @@ export const addParticipant = (req, res) => {
     const usuarioId = data[0].id;
 
     const q2 =
-      "INSERT INTO usuario_participa_comunidade (`usuario_id`, `comunidade_id`) VALUES (?)";
+      "INSERT INTO usuario_participa_comunidade (`usuario_id`, `comunidade_id`) VALUES (?, ?)";
     const values = [usuarioId, comunidadeId];
 
     db.query(q2, values, (err, result) => {
