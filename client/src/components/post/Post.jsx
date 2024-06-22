@@ -10,6 +10,7 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Comments from "../comments/Comments";
 import { sendRequest } from "../../axios";
+import MusicPlayer from "../musicPlayer/musicPlayer";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -80,7 +81,8 @@ const Post = ({ post }) => {
         </div>
         <div className="content">
           <p>{post.conteudo}</p>
-          <img src={"./upload/" + post.link} alt="" />
+          {post.link && <MusicPlayer playlist_src={"./upload/" + post.link} />}
+          {/* <img src={"./upload/" + post.link} alt="" /> */}
         </div>
         <div className="info">
           <div className="item" onClick={handleLikeClick} aria-label="Like" role="button" tabIndex="0">
