@@ -65,3 +65,7 @@ export const logout = (req, resp) => {
     .status(200)
     .send("User fez logout.");
 };
+ 
+ 
+
+
