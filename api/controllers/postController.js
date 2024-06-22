@@ -37,12 +37,11 @@ export const addPost = (req, resp) => {
 
     const postData = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
       //inserir na tabela 'usuario_posta_postagem'
-      const q = `INSERT INTO postagem (usuario_id,conteudo,data,link) VALUES (?, ?, ?)`;
+      const q = `INSERT INTO postagem (usuario_id,conteudo,data) VALUES (?, ?, ?)`;
       const values = [
         userInfo.id,
         req.body.conteudo,
         postData,
-        req.body.link,
       ];
 
       db.query(q, values, (err, data) => {
