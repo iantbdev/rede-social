@@ -8,12 +8,13 @@ export const getPosts = (req, resp) => {
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return resp.status(403).send("Token não é válido.");
-    
+
     // mostra apenas seus posts ou dos seus amigos
     const q = `SELECT 
                 *
                FROM 
                  postagem p
+                 JOIN usuario u ON p.usuario_id = u.id
                 LEFT JOIN musica m ON m.postagem_id = p.id_postagem
                 LEFT JOIN
                  usuario_segue_usuario usu ON p.usuario_id = usu.usuario_id_seguindo 
@@ -38,16 +39,12 @@ export const addPost = (req, resp) => {
     if (err) return resp.status(403).send("Token não é válido.");
 
     const postData = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
-      //inserir na tabela 'usuario_posta_postagem'
-      const q = `INSERT INTO postagem (usuario_id,conteudo,data) VALUES (?, ?, ?);`;
-      const values = [
-        userInfo.id,
-        req.body.conteudo,
-        postData,
-      ];
+    //inserir na tabela 'usuario_posta_postagem'
+    const q = `INSERT INTO postagem (usuario_id,conteudo,data) VALUES (?, ?, ?);`;
+    const values = [userInfo.id, req.body.conteudo, postData];
 
-      db.query(q, values, (err, data) => {
-        if (err) return resp.status(500).send(err);
+    db.query(q, values, (err, data) => {
+      if (err) return resp.status(500).send(err);
 
       // Get the ID of the newly inserted post
       const lastIdQuery = `SELECT LAST_INSERT_ID() as id;`;

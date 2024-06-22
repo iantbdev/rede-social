@@ -5,6 +5,7 @@ import likesRoutes from "./routes/likes.js";
 import commentsRoutes from "./routes/comments.js";
 import authRoutes from "./routes/auth.js";
 import cookieParser from "cookie-parser";
+import communityRoutes from "./routes/community.js";
 import cors from "cors";
 import multer from "multer";
 const app = express();
@@ -56,6 +57,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/likes", likesRoutes);
 app.use("/api/comments", commentsRoutes);
+app.use("/api/communities", communityRoutes);
 app.use("/api/auth", authRoutes);
 
 app.listen(8800, () => {
