@@ -5,5 +5,5 @@ export const db = mysql2.createConnection({
   host: "localhost",
   user: "root",
   password: "senha", //  password: "senha",
-  database: "redesocial",
+  database: "redesocial2",
 });

@@ -38,7 +38,6 @@ const Post = ({ post }) => {
 
         const response = await sendRequest.get(`/likes/${post.id_postagem}`);
         setTotalLikes(prevTotalLikes => prevTotalLikes + response.data);
-        console.log("yo yo!");
       } catch (error) {
         console.error('Error fetching likes:', error);
       }

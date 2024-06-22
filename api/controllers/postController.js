@@ -14,6 +14,7 @@ export const getPosts = (req, resp) => {
                 *
                FROM 
                  postagem p
+                LEFT JOIN musica m ON m.postagem_id = p.id_postagem
                 LEFT JOIN
                  usuario_segue_usuario usu ON p.usuario_id = usu.usuario_id_seguindo 
                 WHERE usu.usuario_id_seguidores= ? 
@@ -37,7 +38,7 @@ export const addPost = (req, resp) => {
 
     const postData = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
       //inserir na tabela 'usuario_posta_postagem'
-      const q = `INSERT INTO postagem (usuario_id,conteudo,data) VALUES (?, ?, ?)`;
+      const q = `INSERT INTO postagem (usuario_id,conteudo,data) VALUES (?, ?, ?);`;
       const values = [
         userInfo.id,
         req.body.conteudo,
@@ -46,7 +47,26 @@ export const addPost = (req, resp) => {
 
       db.query(q, values, (err, data) => {
         if (err) return resp.status(500).send(err);
-        return resp.status(200).send("Post criado com sucesso!");
+
+      // Get the ID of the newly inserted post
+      const lastIdQuery = `SELECT LAST_INSERT_ID() as id;`;
+      db.query(lastIdQuery, (err, selectResult) => {
+        if (err) return resp.status(500).send(err);
+        const postId = selectResult[0].id;
+
+        // Check if there's a link for musica to insert
+        if (req.body.link) {
+          const insertMusicQuery = `INSERT INTO musica (postagem_id, link) VALUES (?, ?);`;
+          const musicValues = [postId, req.body.link];
+
+          db.query(insertMusicQuery, musicValues, (err, musicResult) => {
+            if (err) return resp.status(500).send(err);
+            return resp.status(200).send("Post e música criados com sucesso!");
+          });
+        } else {
+          return resp.status(200).send("Post criado com sucesso!");
+        }
       });
+    });
   });
 };
