@@ -18,7 +18,7 @@ const Share = () => {
       const formData = new FormData();
       formData.append("file", file);
       const resp = await sendRequest.post("/upload", formData);
-      return resp.data; // (Assume que a URL da imagem está no campo 'data')
+      return resp.data;
     } catch (err) {
       console.log(err);
     }
@@ -52,7 +52,7 @@ const Share = () => {
             <img src={currentUser.profilePic} alt="" />
             <input
               type="text"
-              placeholder={`O que você anda ouvindo, ${currentUser.name}?`}
+              placeholder={`O que você anda ouvindo, ${currentUser.nome_completo}?`}
               onChange={(e) => setCont(e.target.value)}
               value={cont}
             />
