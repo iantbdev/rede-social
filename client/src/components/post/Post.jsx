@@ -9,6 +9,7 @@ import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Comments from "../comments/Comments";
+import { sendRequest } from "../../axios";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -16,47 +17,47 @@ const Post = ({ post }) => {
   const [totalLikes, setTotalLikes] = useState(0);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    const fetchData = async () => {
-      await fetchLikedStatus(token);
-      await fetchTotalLikes(token);
+    const fetchLikedStatus = async () => {
+      try {
+
+        const response = await sendRequest.get(`/likes/liked/${post.id_postagem}`);
+        if (response.data.length > 0) {
+          setLiked(response.data[0].like);
+        }
+      } catch (error) {
+        console.error('Error fetching liked status:', error);
+      }
     };
+  
+    fetchLikedStatus();
+  }, [post.id_postagem]); 
 
-    fetchData();
-  }, [post.id]);
+  useEffect(() => {
+    const fetchLikeAmount = async () => {
+      try {
 
-  const fetchLikedStatus = async (token) => {
-    try {
-      const response = await axios.get(`/api/likes/liked/${post.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        const response = await sendRequest.get(`/likes/${post.id_postagem}`);
+        setTotalLikes(prevTotalLikes => prevTotalLikes + response.data);
+        console.log("yo yo!");
+      } catch (error) {
+        console.error('Error fetching likes:', error);
+      }
+    };
+  
+    fetchLikeAmount();
+  }, [post.id_postagem]); 
+
+
+  const handleLikeClick = async (e) => {
+    e.preventDefault();
+    try { 
+      const response = await sendRequest.post('/likes', {
+        postagem_id: post.id_postagem,
+        like: !liked, 
       });
-      setLiked(response.data.liked);
+      setLiked(!liked); 
     } catch (error) {
-      console.error('Failed to fetch liked status', error);
-    }
-  };
-
-  const fetchTotalLikes = async (token) => {
-    try {
-      const response = await axios.get(`/api/likes/${post.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setTotalLikes(response.data.likes);
-    } catch (error) {
-      console.error('Failed to fetch like amount', error);
-    }
-  };
-
-  const handleLikeClick = async () => {
-    const token = localStorage.getItem('accessToken');
-    try {
-      await axios.post(`/api/likes/${post.id}`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      await fetchLikedStatus(token);
-      await fetchTotalLikes(token);
-    } catch (error) {
-      console.error('Failed to add like', error);
+      console.error('Error adding like:', error);
     }
   };
 

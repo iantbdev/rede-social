@@ -3,7 +3,7 @@ import {getLiked,getLikes,addLike} from "../controllers/likeController.js";
 
 const router = express.Router();
 
-router.get("/liked/:postId",getLiked);
-router.get("/:postId",getLikes);
-router.post("/:postId",addLike);
+router.get("/liked/:postagem_id",getLiked);
+router.get("/:postagem_id",getLikes);
+router.post("/",addLike);
 export default router;
