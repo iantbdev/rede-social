@@ -69,7 +69,7 @@ function App() {
           element: <Profile />,
         },
         {
-          path: "/community",
+          path: "/communities",
           element: <Comunidade />,
         },
       ],
