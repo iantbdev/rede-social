@@ -6,7 +6,7 @@ export const getUser = (req, res) => {
   const usuarioId = req.params.id;
   console.log("Buscando usuário com id:", usuarioId);
 
-  const q = "SELECT * FROM usuario WHERE id=?";
+  const q = "SELECT * FROM usuario WHERE id= ?";
 
   db.query(q, [usuarioId], (err, data) => {
     if (err) {

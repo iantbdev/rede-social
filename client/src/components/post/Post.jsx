@@ -15,50 +15,54 @@ const Post = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [totalLikes, setTotalLikes] = useState(0);
 
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    const fetchData = async () => {
-      await fetchLikedStatus(token);
-      await fetchTotalLikes(token);
-    };
+  // useEffect(() => {
+  //   const token = localStorage.getItem("accessToken");
+  //   const fetchData = async () => {
+  //     await fetchLikedStatus(token);
+  //     await fetchTotalLikes(token);
+  //   };
 
-    fetchData();
-  }, [post.id]);
+  //   fetchData();
+  // }, [post.id]);
 
-  const fetchLikedStatus = async (token) => {
-    try {
-      const response = await axios.get(`/api/likes/liked/${post.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setLiked(response.data.liked);
-    } catch (error) {
-      console.error('Failed to fetch liked status', error);
-    }
-  };
+  // const fetchLikedStatus = async (token) => {
+  //   try {
+  //     const response = await axios.get(`/api/likes/liked/${post.id}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     setLiked(response.data.liked);
+  //   } catch (error) {
+  //     console.error('Failed to fetch liked status', error);
+  //   }
+  // };
 
-  const fetchTotalLikes = async (token) => {
-    try {
-      const response = await axios.get(`/api/likes/${post.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setTotalLikes(response.data.likes);
-    } catch (error) {
-      console.error('Failed to fetch like amount', error);
-    }
-  };
+  // const fetchTotalLikes = async (token) => {
+  //   try {
+  //     const response = await axios.get(`/api/likes/${post.id}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     setTotalLikes(response.data.likes);
+  //   } catch (error) {
+  //     console.error('Failed to fetch like amount', error);
+  //   }
+  // };
 
-  const handleLikeClick = async () => {
-    const token = localStorage.getItem('accessToken');
-    try {
-      await axios.post(`/api/likes/${post.id}`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      await fetchLikedStatus(token);
-      await fetchTotalLikes(token);
-    } catch (error) {
-      console.error('Failed to add like', error);
-    }
-  };
+  // const handleLikeClick = async () => {
+  //   const token = localStorage.getItem("accessToken");
+  //   try {
+  //     await axios.post(
+  //       `/api/likes/${post.id}`,
+  //       {},
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
+  //     await fetchLikedStatus(token);
+  //     await fetchTotalLikes(token);
+  //   } catch (error) {
+  //     console.error("Failed to add like", error);
+  //   }
+  // };
 
   return (
     <div className="post">
@@ -83,11 +87,23 @@ const Post = ({ post }) => {
           <img src={"./upload/" + post.link} alt="" />
         </div>
         <div className="info">
-          <div className="item" onClick={handleLikeClick} aria-label="Like" role="button" tabIndex="0">
-            {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-            {totalLikes}
+          <div
+            className="item"
+            // onClick={handleLikeClick}
+            aria-label="Like"
+            role="button"
+            tabIndex="0"
+          >
+            {/* {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
+            {totalLikes} */}
           </div>
-          <div className="item" onClick={() => setCommentOpen(!commentOpen)} aria-label="Comments" role="button" tabIndex="0">
+          <div
+            className="item"
+            onClick={() => setCommentOpen(!commentOpen)}
+            aria-label="Comments"
+            role="button"
+            tabIndex="0"
+          >
             <TextsmsOutlinedIcon />
             12 Comments
           </div>

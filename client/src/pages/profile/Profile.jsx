@@ -15,8 +15,8 @@ import { useLocation } from "react-router-dom";
 
 const Profile = () => {
   //não funciona ainda
-  const location = useLocation();
-  const usuarioId = location.pathname.split("/")[2];
+
+  const usuarioId = parseInt(useLocation().pathname.split("/")[2]);
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["usuario", usuarioId],

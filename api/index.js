@@ -40,7 +40,7 @@ app.post("/api/upload", upload.single("file"), (req, resp) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postsRoutes);
-app.use("/api/likes", likesRoutes);
+// app.use("/api/likes", likesRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/auth", authRoutes);
 
