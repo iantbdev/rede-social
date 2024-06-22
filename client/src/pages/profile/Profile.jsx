@@ -9,16 +9,31 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { sendRequest } from "../../axios";
+import { useLocation } from "react-router-dom";
 
 const Profile = () => {
+  //não funciona ainda
+  const location = useLocation();
+  const usuarioId = location.pathname.split("/")[2];
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["usuario", usuarioId],
+    queryFn: () =>
+      sendRequest.get("/users/find/" + usuarioId).then((resp) => {
+        return resp.data;
+      }),
+  });
+
+  const handleFollow = () => {};
+
+  console.log(data + "dados do perfil:");
+
   return (
     <div className="profile">
       <div className="images">
-        <img
-          src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt=""
-          className="cover"
-        />
+        <img src="" alt="" className="cover" />
         <img
           src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
           alt=""
@@ -56,7 +71,7 @@ const Profile = () => {
                 <span>lama.dev</span>
               </div>
             </div>
-            <button>follow</button>
+            <button onClick={handleFollow}>follow</button>
           </div>
           <div className="right">
             <EmailOutlinedIcon />
