@@ -12,7 +12,7 @@ export const getComments = (req, resp) => {
                  JOIN 
                    postagem p ON ucp.postagem_id_postagem = p.id_postagem
                  WHERE
-                   p.id_postagem = ?
+                   ucp.postagem_id_postagem = ?
                    ORDER BY ucp.data DESC;
                  `;
 
@@ -31,15 +31,15 @@ export const addComments = (req, resp) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return resp.status(403).send("Token não é válido.");
 
-    const q2 = `INSERT INTO usuario_comenta_postagem (conteudo, data, usuario_id, postagem_id_postagem) VALUES (?, ?, ?, ?)`;
+    const q2 = `INSERT INTO usuario_comenta_postagem (c_conteudo, data, usuario_id, postagem_id_postagem) VALUES (?, ?, ?, ?)`;
     const values = [
-      req.body.conteudo,
+      req.body.c_conteudo,
       moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
       userInfo.id,
       req.body.postagem_id_postagem,
     ];
 
-    //console.log("VALORES DOS COMENTARIOS:", values);
+    // console.log("VALORES DOS COMENTARIOS:", values);
 
     db.query(q2, values, (err, data) => {
       if (err) {

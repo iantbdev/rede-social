@@ -33,7 +33,7 @@ const Share = () => {
   const handleShareClick = async (e) => {
     e.preventDefault();
     setError(""); // Reset error state
-    let songUrl = await uploadFile(); 
+    let songUrl = await uploadFile();
     if (file && !songUrl) return; // Stop execution if the upload failed
     console.log(songUrl);
     try {
@@ -54,7 +54,8 @@ const Share = () => {
 
   return (
     <div className="share">
-      {error && <div className="error">{error}</div>} {/* Display error message if any */}
+      {error && <div className="error">{error}</div>}{" "}
+      {/* Display error message if any */}
       <div className="container">
         <div className="top">
           <div className="left">
@@ -62,8 +63,8 @@ const Share = () => {
             <input
               type="text"
               placeholder={`O que você anda ouvindo, ${currentUser.nome_completo}?`}
-              onChange={(e) => setCont(e.target.value)}
-              value={cont}
+              onChange={(e) => setContent(e.target.value)}
+              value={content}
             />
           </div>
           {file && (

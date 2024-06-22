@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import "./comments.scss";
 import { AuthContext } from "../../context/authContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,9 +14,17 @@ const Comments = ({ id_postagem }) => {
     queryKey: ["comments", id_postagem],
     queryFn: () =>
       sendRequest.get(`/comments?id_postagem=${id_postagem}`).then((resp) => {
+        console.log(resp.data + "dados");
         return resp.data;
       }),
   });
+
+  //para os testes
+  useEffect(() => {
+    if (data) {
+      console.log("Dados de usuario_comenta_postagem:", data);
+    }
+  }, [data]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -41,7 +49,7 @@ const Comments = ({ id_postagem }) => {
         <img src={currentUser.profilePic} alt="" />
         <input
           type="text"
-          placeholder="escreva um comentário"
+          placeholder="Escreva um comentário"
           value={cont}
           onChange={(e) => setCont(e.target.value)}
         />
@@ -54,7 +62,7 @@ const Comments = ({ id_postagem }) => {
               <img src={usuario_comenta_postagem.profilePic} alt="" />
               <div className="info">
                 <span>{usuario_comenta_postagem.nome_completo}</span>
-                <p>{usuario_comenta_postagem.conteudo}</p>
+                <p>{usuario_comenta_postagem.c_conteudo}</p>
               </div>
               <span className="date">
                 {" "}
