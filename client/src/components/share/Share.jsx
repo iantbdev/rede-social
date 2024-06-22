@@ -22,6 +22,7 @@ const Share = () => {
       const formData = new FormData();
       formData.append("file", file);
       const response = await sendRequest.post("/upload", formData);
+      console.log(response);
       return response.data; // Assuming the URL of the song is in the 'data' field
     } catch (err) {
       console.error("Upload failed:", err);
@@ -35,13 +36,12 @@ const Share = () => {
     setError(""); // Reset error state
     let songUrl = await uploadFile(); 
     if (file && !songUrl) return; // Stop execution if the upload failed
-    console.log(songUrl);
     try {
-      await sendRequest.post("/posts", {
+     const response = await sendRequest.post("/posts", {
         conteudo: content,
         link: songUrl,
       });
-
+      console.log(response)
       // Invalidate and refetch posts
       queryClient.invalidateQueries(["posts"]);
       setContent("");
@@ -62,8 +62,8 @@ const Share = () => {
             <input
               type="text"
               placeholder={`O que você anda ouvindo, ${currentUser.nome_completo}?`}
-              onChange={(e) => setCont(e.target.value)}
-              value={cont}
+              onChange={(e) => setContent(e.target.value)}
+              value={content}
             />
           </div>
           {file && (
