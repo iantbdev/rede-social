@@ -1,45 +1,67 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import "./comments.scss";
 import { AuthContext } from "../../context/authContext";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { sendRequest } from "../../axios.js";
+import moment from "moment";
 
-const Comments = () => {
+const Comments = ({ id_postagem }) => {
+  const [cont, setCont] = useState(""); //conteudo
   const { currentUser } = useContext(AuthContext);
-  //Temporary
-  const comments = [
-    {
-      id: 1,
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam",
-      name: "John Doe",
-      userId: 1,
-      profilePicture:
-        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    },
-    {
-      id: 2,
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam",
-      name: "Jane Doe",
-      userId: 2,
-      profilePicture:
-        "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    },
-  ];
+  const queryClient = useQueryClient();
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["comments", id_postagem],
+    queryFn: () =>
+      sendRequest.get(`/comments?id_postagem=${id_postagem}`).then((resp) => {
+        return resp.data;
+      }),
+  });
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+    try {
+      await sendRequest.post("/comments", {
+        conteudo: cont,
+        postagem_id_postagem: id_postagem,
+      });
+
+      // refetch comentários
+      queryClient.invalidateQueries(["comments", id_postagem]);
+      setCont("");
+    } catch (error) {
+      console.error("Erro ao criar comentário:", error);
+    }
+  };
+
   return (
     <div className="comments">
       <div className="write">
         <img src={currentUser.profilePic} alt="" />
-        <input type="text" placeholder="write a comment" />
-        <button>Send</button>
+        <input
+          type="text"
+          placeholder="escreva um comentário"
+          value={cont}
+          onChange={(e) => setCont(e.target.value)}
+        />
+        <button onClick={handleClick}>Send</button>
       </div>
-      {comments.map((comment) => (
-        <div className="comment">
-          <img src={comment.profilePicture} alt="" />
-          <div className="info">
-            <span>{comment.name}</span>
-            <p>{comment.desc}</p>
-          </div>
-          <span className="date">1 hour ago</span>
-        </div>
-      ))}
+      {isLoading
+        ? "loading"
+        : data.map((usuario_comenta_postagem) => (
+            <div className="comment">
+              <img src={usuario_comenta_postagem.profilePic} alt="" />
+              <div className="info">
+                <span>{usuario_comenta_postagem.nome_completo}</span>
+                <p>{usuario_comenta_postagem.conteudo}</p>
+              </div>
+              <span className="date">
+                {" "}
+                {moment(usuario_comenta_postagem.data).fromNow()}{" "}
+              </span>
+            </div>
+          ))}
     </div>
   );
 };
