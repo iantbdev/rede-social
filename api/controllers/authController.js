@@ -14,7 +14,7 @@ export const register = (req, resp) => {
     const hashedPassword = bcrypt.hashSync(req.body.senha, salt);
     //CRIA NOVO USUARIO
     const q =
-      "INSERT INTO usuario ( `username`, `email`, `senha`, `nome_completo`, `data_de_nascimento`) VALUE (?)";
+      "INSERT INTO usuario ( `username`, `email`, `senha`, `nome_completo`, `data_de_nascimento`) VALUES (?)";
 
     const values = [
       req.body.username,
