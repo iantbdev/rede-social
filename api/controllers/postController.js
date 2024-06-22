@@ -13,14 +13,13 @@ export const getPosts = (req, resp) => {
     const q = `SELECT 
                 *
                FROM 
-                 usuario_posta_postagem upp
-               JOIN 
-                 usuario u ON upp.usuario_id = u.id
-               JOIN 
-                 postagem p ON upp.postagem_id_postagem = p.id_postagem
-               LEFT JOIN
-                 usuario_segue_usuario usu ON upp.usuario_id = usu.usuario_id_seguindo WHERE usu.usuario_id_seguidores= ? OR upp.usuario_id=? 
-                 ORDER BY p.data DESC;
+                 postagem p
+                LEFT JOIN musica m ON m.postagem_id = p.id_postagem
+                LEFT JOIN
+                 usuario_segue_usuario usu ON p.usuario_id = usu.usuario_id_seguindo 
+                WHERE usu.usuario_id_seguidores= ? 
+                OR p.usuario_id=? 
+                ORDER BY p.data DESC;
                `;
 
     db.query(q, [userInfo.id, userInfo.id], (err, data) => {
@@ -37,27 +36,36 @@ export const addPost = (req, resp) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return resp.status(403).send("Token não é válido.");
 
-    // primeira consulta: inserir na tabela 'postagem'
-    const q1 = `INSERT INTO postagem (data) VALUES (?)`;
     const postData = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
-
-    db.query(q1, [postData], (err, result) => {
-      if (err) return resp.status(500).send(err);
-
-      const postagemId = result.insertId;
-
-      // segunda consulta: inserir na tabela 'usuario_posta_postagem'
-      const q2 = `INSERT INTO usuario_posta_postagem (conteudo, link, usuario_id, postagem_id_postagem) VALUES (?, ?, ?, ?)`;
+      //inserir na tabela 'usuario_posta_postagem'
+      const q = `INSERT INTO postagem (usuario_id,conteudo,data) VALUES (?, ?, ?);`;
       const values = [
-        req.body.conteudo,
-        req.body.link,
         userInfo.id,
-        postagemId,
+        req.body.conteudo,
+        postData,
       ];
 
-      db.query(q2, values, (err, data) => {
+      db.query(q, values, (err, data) => {
         if (err) return resp.status(500).send(err);
-        return resp.status(200).send("Post criado com sucesso!");
+
+      // Get the ID of the newly inserted post
+      const lastIdQuery = `SELECT LAST_INSERT_ID() as id;`;
+      db.query(lastIdQuery, (err, selectResult) => {
+        if (err) return resp.status(500).send(err);
+        const postId = selectResult[0].id;
+
+        // Check if there's a link for musica to insert
+        if (req.body.link) {
+          const insertMusicQuery = `INSERT INTO musica (postagem_id, link) VALUES (?, ?);`;
+          const musicValues = [postId, req.body.link];
+
+          db.query(insertMusicQuery, musicValues, (err, musicResult) => {
+            if (err) return resp.status(500).send(err);
+            return resp.status(200).send("Post e música criados com sucesso!");
+          });
+        } else {
+          return resp.status(200).send("Post criado com sucesso!");
+        }
       });
     });
   });
