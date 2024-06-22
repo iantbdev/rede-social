@@ -37,6 +37,8 @@ const Share = () => {
     let songUrl = await uploadFile(); 
     if (file && !songUrl) return; // Stop execution if the upload failed
     try {
+      console.log(content);
+      console.log(songUrl);
      const response = await sendRequest.post("/posts", {
         conteudo: content,
         link: songUrl,

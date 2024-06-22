@@ -31,8 +31,6 @@ export const getPosts = (req, resp) => {
 
 export const addPost = (req, resp) => {
   console.log("ei");
-  console.log(req.body);
-  console.log(token);
   const token = req.cookies.accessToken;
   if (!token) return resp.status(401).send("Não está logado.");
 
