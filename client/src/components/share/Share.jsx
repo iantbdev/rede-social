@@ -2,7 +2,7 @@ import "./share.scss";
 import Image from "../../assets/4.png";
 import Map from "../../assets/map.png";
 import Friend from "../../assets/friend.png";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { sendRequest } from "../../axios";
@@ -11,9 +11,26 @@ import MusicPlayer from "../musicPlayer/musicPlayer";
 const Share = () => {
   const [file, setFile] = useState(null);
   const [content, setContent] = useState("");
-  const [error, setError] = useState(""); // Added state for error handling
+  const [error, setError] = useState("");
+  const [comunidadeId, setComunidadeId] = useState(null);
+  const [comunidades, setComunidades] = useState([]); // Estado para armazenar as opções de comunidades
+
   const { currentUser } = useContext(AuthContext);
   const queryClient = useQueryClient();
+
+  //para teste
+  useEffect(() => {
+    const fetchComunidades = async () => {
+      try {
+        const response = await sendRequest.get("/communities/all");
+        setComunidades(response.data); // Define as comunidades recebidas do servidor
+      } catch (error) {
+        console.error("Erro ao buscar comunidades:", error);
+      }
+    };
+
+    fetchComunidades();
+  }, []);
 
   const uploadFile = async () => {
     if (!file) return "";
@@ -40,15 +57,17 @@ const Share = () => {
       await sendRequest.post("/posts", {
         conteudo: content,
         link: songUrl,
+        comunidade_id: comunidadeId,
       });
 
       // Invalidate and refetch posts
       queryClient.invalidateQueries(["posts"]);
       setContent("");
       setFile(null);
+      setComunidadeId("");
     } catch (error) {
-      console.error("Error creating post:", error);
-      setError("Failed to create post."); // Update error state
+      console.error("Error oa criar post", error);
+      setError("Falhou em criar post."); // Update error state
     }
   };
 
@@ -96,6 +115,17 @@ const Share = () => {
             </div>
           </div>
           <div className="right">
+            <select
+              value={comunidadeId}
+              onChange={(e) => setComunidadeId(e.target.value)}
+            >
+              <option value="">Selecionar Comunidade</option>
+              {comunidades.map((comunidade) => (
+                <option key={comunidade.id} value={comunidade.id}>
+                  {comunidade.nome}
+                </option>
+              ))}
+            </select>
             <button onClick={handleShareClick}>Share</button>
           </div>
         </div>
