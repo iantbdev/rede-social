@@ -6,13 +6,50 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import moment from "moment";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [totalLikes, setLikes] = useState(false);
 
-  const liked = false;
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken'); 
+    const fetchLikedStatus = async () => {
+      try {
+        const response = await axios.get(`/api/likes/getLiked?postId=${post.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setLiked(response.data.liked); 
+      } catch (error) {
+        console.error('Failed to fetch liked status', error);
+      }
+    };
+
+    fetchLikedStatus();
+  }, [post.id]); 
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken'); 
+    const fetchTotalLikes = async () => {
+      try {
+        const response = await axios.get(`/api/likes/getLikes?postId=${post.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setLikes(response.data.likes); 
+      } catch (error) {
+        console.error('Failed to fetch like amount', error);
+      }
+    };
+
+    fetchTotalLikes();
+  }, [post.id]);
 
   return (
     <div className="post">
@@ -39,7 +76,7 @@ const Post = ({ post }) => {
         <div className="info">
           <div className="item">
             {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-            12 Likes
+            {totalLikes}
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
