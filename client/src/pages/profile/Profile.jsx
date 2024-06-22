@@ -26,6 +26,8 @@ const Profile = () => {
       }),
   });
 
+  const handleFollow = () => {};
+
   console.log(data + "dados do perfil:");
 
   return (
@@ -69,7 +71,7 @@ const Profile = () => {
                 <span>lama.dev</span>
               </div>
             </div>
-            <button>follow</button>
+            <button onClick={handleFollow}>follow</button>
           </div>
           <div className="right">
             <EmailOutlinedIcon />
