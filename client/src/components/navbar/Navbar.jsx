@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'; // Corrected import statement
+import React, { useContext } from "react"; // Corrected import statement
 import "./navbar.scss";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -12,14 +12,12 @@ import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import axios from 'axios'; 
-
+import axios from "axios";
 
 const Navbar = () => {
   const { toggle, darkMode } = useContext(DarkModeContext);
   const { currentUser } = useContext(AuthContext);
   const { logout } = useContext(AuthContext);
-
 
   const handleLogout = async () => {
     try {
@@ -49,27 +47,18 @@ const Navbar = () => {
           <input type="text" placeholder="Search..." />
         </div>
       </div>
-      <div className="right">
-        <PersonOutlinedIcon />
-        <EmailOutlinedIcon />
-        <NotificationsOutlinedIcon />
-        <div className="user">
-          <img
-            src={currentUser.profilePic}
-            alt=""
-          />
-          <span>{currentUser.name}</span>
-        </div>
-      </div>
+
       <div className="right">
         <PersonOutlinedIcon />
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
         <div className="user">
           <img src={currentUser.profilePic} alt="" />
-          <span>{currentUser.name}</span>
         </div>
-        <LogoutOutlinedIcon onClick={handleLogout} style={{ cursor: 'pointer' }}></LogoutOutlinedIcon>
+        <LogoutOutlinedIcon
+          onClick={handleLogout}
+          style={{ cursor: "pointer" }}
+        ></LogoutOutlinedIcon>
       </div>
     </div>
   );
