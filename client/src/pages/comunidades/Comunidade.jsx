@@ -3,6 +3,7 @@ import { sendRequest } from "../../axios.js";
 import CreateCommunity from "../../components/createCommunity/createCommunity.jsx";
 import { useState } from "react";
 import "./comunidade.scss";
+import CommunityPost from "../../components/posts/communityPosts.jsx";
 
 const Comunidade = () => {
   const { isLoading, error, data } = useQuery({
@@ -46,7 +47,6 @@ const CommunityItem = ({ comunidade }) => {
       queryClient.invalidateQueries(["communities"]);
       setUsername("");
     } catch (err) {
-      console.log("OIII DEU RUIM");
       console.error("Erro ao adicionar participante:", err);
       setError("Erro ao adicionar participante");
     } finally {
@@ -54,13 +54,32 @@ const CommunityItem = ({ comunidade }) => {
     }
   };
 
+  const {
+    data: posts,
+    isLoading: postsLoading,
+    error: postsError,
+  } = useQuery({
+    queryKey: ["posts"],
+    queryFn: () =>
+      sendRequest.get("/posts").then((resp) => {
+        console.log("Posts recebidos:", resp.data);
+        return resp.data;
+      }),
+  });
+
+  // Filtra os posts para incluir apenas os que pertencem a esta comunidade e têm comunidade_id não nulo
+  const filteredPosts = posts
+    ? posts.filter(
+        (post) =>
+          post.comunidade_id !== null && post.comunidade_id === comunidade.id
+      )
+    : [];
+
   return (
     <div className="communityItem">
       <h2>{comunidade.nome}</h2>
       <p>{comunidade.descricao}</p>
-      <span>
-        Criado em: {new Date(comunidade.data_criacao).toLocaleDateString()}
-      </span>
+      <span>Número da comunidade: {comunidade.id}</span>
       <form onSubmit={handleAddParticipant}>
         <input
           type="text"
@@ -72,7 +91,10 @@ const CommunityItem = ({ comunidade }) => {
           {isSubmitting ? "Adicionando..." : "Adicionar Participante"}
         </button>
       </form>
-      {/* exibir posts*/}
+      {/* Exibir posts */}
+      <div className="posts">
+        <CommunityPost comunidadeId={comunidade.id} />
+      </div>
     </div>
   );
 };
