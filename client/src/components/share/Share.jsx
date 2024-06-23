@@ -1,7 +1,6 @@
 import "./share.scss";
 import Image from "../../assets/4.png";
-import Map from "../../assets/map.png";
-import Friend from "../../assets/friend.png";
+
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useQueryClient } from "@tanstack/react-query";
@@ -108,14 +107,6 @@ const Share = () => {
                 <span>Add Music</span>
               </div>
             </label>
-            <div className="item">
-              <img src={Map} alt="" />
-              <span>Add Place</span>
-            </div>
-            <div className="item">
-              <img src={Friend} alt="" />
-              <span>Tag Friends</span>
-            </div>
           </div>
           <div className="right">
             <select
