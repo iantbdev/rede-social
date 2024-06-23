@@ -40,7 +40,7 @@ const Register = () => {
             suas músicas favoritas, descobrir novas faixas e conectar-se com
             outros amantes de música.
           </p>
-          <span>Do you have an account?</span>
+          <span>Você já tem uma conta?</span>
           <Link to="/login">
             <button>Login</button>
           </Link>
