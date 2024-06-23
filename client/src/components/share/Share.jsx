@@ -39,6 +39,7 @@ const Share = () => {
       const formData = new FormData();
       formData.append("file", file);
       const response = await sendRequest.post("/upload", formData);
+      console.log(response);
       return response.data; // Assuming the URL of the song is in the 'data' field
     } catch (err) {
       console.error("Upload failed:", err);
@@ -52,14 +53,15 @@ const Share = () => {
     setError(""); // Reset error state
     let songUrl = await uploadFile();
     if (file && !songUrl) return; // Stop execution if the upload failed
-    console.log(songUrl);
     try {
-      await sendRequest.post("/posts", {
+      console.log(content);
+      console.log(songUrl);
+     const response = await sendRequest.post("/posts", {
         conteudo: content,
         link: songUrl,
         comunidade_id: comunidadeId,
       });
-
+      console.log(response)
       // Invalidate and refetch posts
       queryClient.invalidateQueries(["posts"]);
       setContent("");
