@@ -28,11 +28,18 @@ export const createCommunity = (req, res) => {
   });
 };
 
-export const getCommunities = (req, res) => {
-  const q = "SELECT * FROM comunidade";
+export const getUserCommunities = (req, res) => {
+  const { userId } = req.params;
 
-  db.query(q, (err, data) => {
-    if (err) return res.status(500).send(err);
+  const q = `SELECT c.* FROM comunidade c
+    JOIN usuario_participa_comunidade upc ON c.id = upc.comunidade_id WHERE upc.usuario_id = ?`;
+
+  db.query(q, [userId], (err, data) => {
+    if (err) {
+      console.error("Erro na consulta ao banco de dados:", err);
+      return res.status(500).send(err);
+    }
+    console.log("Comunidades encontradas para o usuário:", data); // Log de depuração
     return res.status(200).send(data);
   });
 };

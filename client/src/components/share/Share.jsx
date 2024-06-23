@@ -12,7 +12,7 @@ const Share = () => {
   const [file, setFile] = useState(null);
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
-  const [comunidadeId, setComunidadeId] = useState(null);
+  const [comunidadeId, setComunidadeId] = useState("");
   const [comunidades, setComunidades] = useState([]); // Estado para armazenar as opções de comunidades
 
   const { currentUser } = useContext(AuthContext);
@@ -22,7 +22,9 @@ const Share = () => {
   useEffect(() => {
     const fetchComunidades = async () => {
       try {
-        const response = await sendRequest.get("/communities/all");
+        const response = await sendRequest.get(
+          `/communities/user/${currentUser?.id}`
+        );
         setComunidades(response.data); // Define as comunidades recebidas do servidor
       } catch (error) {
         console.error("Erro ao buscar comunidades:", error);
@@ -34,25 +36,25 @@ const Share = () => {
 
   const uploadFile = async () => {
     if (!file) return "";
-    console.log(file); // Return empty string if no file to upload
+    console.log(file);
     try {
       const formData = new FormData();
       formData.append("file", file);
       const response = await sendRequest.post("/upload", formData);
       console.log(response);
-      return response.data; // Assuming the URL of the song is in the 'data' field
+      return response.data;
     } catch (err) {
       console.error("Upload failed:", err);
-      setError("Failed to upload file."); // Update error state
-      return ""; // Return an empty string to indicate failure
+      setError("Failed to upload file.");
+      return "";
     }
   };
 
   const handleShareClick = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error state
+    setError("");
     let songUrl = await uploadFile();
-    if (file && !songUrl) return; // Stop execution if the upload failed
+    if (file && !songUrl) return;
     try {
       console.log(content);
       console.log(songUrl);
@@ -62,14 +64,14 @@ const Share = () => {
         comunidade_id: comunidadeId,
       });
       console.log(response);
-      // Invalidate and refetch posts
+      // refetch posts
       queryClient.invalidateQueries(["posts"]);
       setContent("");
       setFile(null);
       setComunidadeId("");
     } catch (error) {
       console.error("Error oa criar post", error);
-      setError("Falhou em criar post."); // Update error state
+      setError("Falhou em criar post.");
     }
   };
 

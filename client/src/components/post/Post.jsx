@@ -20,39 +20,41 @@ const Post = ({ post }) => {
   useEffect(() => {
     fetchLikedStatus();
     fetchLikeAmount();
-  }, [post.id_postagem]); 
+  }, [post.id_postagem]);
 
   const fetchLikedStatus = async () => {
     try {
-      const response = await sendRequest.get(`/likes/liked/${post.id_postagem}`);
+      const response = await sendRequest.get(
+        `/likes/liked/${post.id_postagem}`
+      );
       if (response.data.length > 0) {
         setLiked(response.data[0].like);
       }
     } catch (error) {
-      console.error('Error fetching liked status:', error);
+      console.error("Error fetching liked status:", error);
     }
   };
 
   const fetchLikeAmount = async () => {
     try {
       const response = await sendRequest.get(`/likes/${post.id_postagem}`);
-      setTotalLikes(response.data); 
+      setTotalLikes(response.data);
     } catch (error) {
-      console.error('Error fetching likes:', error);
+      console.error("Error fetching likes:", error);
     }
   };
 
   const handleLikeClick = async (e) => {
     e.preventDefault();
-    try { 
-      await sendRequest.post('/likes', {
+    try {
+      await sendRequest.post("/likes", {
         postagem_id: post.id_postagem,
-        like: !liked, 
+        like: !liked,
       });
       setLiked(!liked);
       fetchLikeAmount();
     } catch (error) {
-      console.error('Error adding like:', error);
+      console.error("Error adding like:", error);
     }
   };
 
@@ -80,13 +82,25 @@ const Post = ({ post }) => {
           {/* <img src={"./upload/" + post.link} alt="" /> */}
         </div>
         <div className="info">
-          <div className="item" onClick={handleLikeClick} aria-label="Like" role="button" tabIndex="0">
+          <div
+            className="item"
+            onClick={handleLikeClick}
+            aria-label="Like"
+            role="button"
+            tabIndex="0"
+          >
             {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
             {totalLikes}
           </div>
-          <div className="item" onClick={() => setCommentOpen(!commentOpen)} aria-label="Comments" role="button" tabIndex="0">
+          <div
+            className="item"
+            onClick={() => setCommentOpen(!commentOpen)}
+            aria-label="Comments"
+            role="button"
+            tabIndex="0"
+          >
             <TextsmsOutlinedIcon />
-            12 Comments
+            Comments
           </div>
           <div className="item" aria-label="Share" role="button" tabIndex="0">
             <ShareOutlinedIcon />

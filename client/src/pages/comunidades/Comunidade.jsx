@@ -1,15 +1,21 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { sendRequest } from "../../axios.js";
 import CreateCommunity from "../../components/createCommunity/createCommunity.jsx";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import "./comunidade.scss";
 import CommunityPost from "../../components/posts/communityPosts.jsx";
+import { AuthContext } from "../../context/authContext";
 
 const Comunidade = () => {
+  const { currentUser } = useContext(AuthContext);
+
   const { isLoading, error, data } = useQuery({
-    queryKey: ["communities"],
+    queryKey: ["userCommunities", currentUser?.id],
     queryFn: () =>
-      sendRequest.get("/communities/all").then((resp) => resp.data),
+      sendRequest
+        .get(`/communities/user/${currentUser?.id}`)
+        .then((resp) => resp.data),
+    enabled: !!currentUser?.id,
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -44,7 +50,7 @@ const CommunityItem = ({ comunidade }) => {
         username,
         comunidadeId: comunidade.id,
       });
-      queryClient.invalidateQueries(["communities"]);
+      queryClient.invalidateQueries(["userCommunities"]);
       setUsername("");
     } catch (err) {
       console.error("Erro ao adicionar participante:", err);
@@ -53,27 +59,6 @@ const CommunityItem = ({ comunidade }) => {
       setIsSubmitting(false);
     }
   };
-
-  const {
-    data: posts,
-    isLoading: postsLoading,
-    error: postsError,
-  } = useQuery({
-    queryKey: ["posts"],
-    queryFn: () =>
-      sendRequest.get("/posts").then((resp) => {
-        console.log("Posts recebidos:", resp.data);
-        return resp.data;
-      }),
-  });
-
-  // Filtra os posts para incluir apenas os que pertencem a esta comunidade e têm comunidade_id não nulo
-  const filteredPosts = posts
-    ? posts.filter(
-        (post) =>
-          post.comunidade_id !== null && post.comunidade_id === comunidade.id
-      )
-    : [];
 
   return (
     <div className="communityItem">

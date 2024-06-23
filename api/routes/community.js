@@ -1,14 +1,14 @@
 import express from "express";
 import {
   createCommunity,
-  getCommunities,
   addParticipant,
+  getUserCommunities,
 } from "../controllers/communityController.js";
 
 const router = express.Router();
 
 router.post("/create", createCommunity);
 router.post("/add-participant", addParticipant);
-router.get("/all", getCommunities);
+router.get("/user/:userId", getUserCommunities);
 
 export default router;
