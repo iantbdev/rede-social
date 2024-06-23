@@ -56,12 +56,12 @@ const Share = () => {
     try {
       console.log(content);
       console.log(songUrl);
-     const response = await sendRequest.post("/posts", {
+      const response = await sendRequest.post("/posts", {
         conteudo: content,
         link: songUrl,
         comunidade_id: comunidadeId,
       });
-      console.log(response)
+      console.log(response);
       // Invalidate and refetch posts
       queryClient.invalidateQueries(["posts"]);
       setContent("");
@@ -76,7 +76,6 @@ const Share = () => {
   return (
     <div className="share">
       {error && <div className="error">{error}</div>}{" "}
-      {/* Display error message if any */}
       <div className="container">
         <div className="top">
           <div className="left">
