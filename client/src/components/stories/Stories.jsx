@@ -1,50 +1,44 @@
 import { useContext } from "react";
-import "./stories.scss"
-import { AuthContext } from "../../context/authContext"
+import "./stories.scss";
+import { AuthContext } from "../../context/authContext";
 
 const Stories = () => {
-
-  const {currentUser} = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext);
 
   //TEMPORARY
   const stories = [
     {
-      id: 1,
-      name: "John Doe",
-      img: "https://images.pexels.com/photos/13916254/pexels-photo-13916254.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+      name: "Jazz",
+      img: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/1e5f3549193935.58ad9f52336d4.jpg",
     },
     {
-      id: 2,
-      name: "John Doe",
-      img: "https://images.pexels.com/photos/13916254/pexels-photo-13916254.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+      name: "Rock",
+      img: "https://i.pinimg.com/originals/f7/a6/b9/f7a6b909c839eee95760a46a572c23af.jpg",
     },
     {
-      id: 3,
-      name: "John Doe",
-      img: "https://images.pexels.com/photos/13916254/pexels-photo-13916254.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+      name: "Hip hop",
+      img: "https://cdn.dribbble.com/users/58684/screenshots/1678738/media/114dc7629dd67a7f296c8461e78fd9fd.jpg?resize=400x300&vertical=center",
     },
     {
-      id: 4,
-      name: "John Doe",
-      img: "https://images.pexels.com/photos/13916254/pexels-photo-13916254.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+      name: "POP",
+      img: "https://i.pinimg.com/originals/33/30/0d/33300d539eace1be3bdee836fe077feb.jpg",
     },
   ];
 
   return (
     <div className="stories">
       <div className="story">
-          <img src={currentUser.profilePic} alt="" />
-          <span>{currentUser.name}</span>
-          <button>+</button>
-        </div>
-      {stories.map(story=>(
+        <img src={currentUser.profilePic} alt="" />
+        <span>{currentUser.nome_completo}</span>
+      </div>
+      {stories.map((story) => (
         <div className="story" key={story.id}>
           <img src={story.img} alt="" />
           <span>{story.name}</span>
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Stories
+export default Stories;
