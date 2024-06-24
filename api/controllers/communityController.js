@@ -8,8 +8,8 @@ export const createCommunity = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).send("Token não é válido.");
 
-    const q1 = "INSERT INTO comunidade (`nome`, `criador_id`) VALUES (?)";
-    const values = [req.body.nome, userInfo.id];
+    const q1 = "INSERT INTO comunidade (`nome`) VALUE (?)";
+    const values = [req.body.nome];
 
     db.query(q1, [values], (err, result) => {
       if (err) return res.status(500).send(err);
