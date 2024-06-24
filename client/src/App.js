@@ -1,6 +1,7 @@
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Comunidade from "./pages/comunidades/Comunidade";
+import Followers from "./pages/followers/Followers";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -73,6 +74,10 @@ function App() {
         {
           path: "/communities",
           element: <Comunidade />,
+        },
+        {
+          path: "/followers",
+          element: <Followers />,
         },
       ],
     },

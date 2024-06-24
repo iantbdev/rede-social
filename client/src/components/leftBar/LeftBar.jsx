@@ -35,7 +35,7 @@ const LeftBar = () => {
           <div className="item">
             <img src={Friends} alt="" />
             <Link
-              to="/communities"
+              to="/followers"
               style={{ textDecoration: "none", color: "inherit" }}
             >
             <span>Friends</span>
