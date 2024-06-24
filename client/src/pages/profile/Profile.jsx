@@ -67,7 +67,14 @@ const Profile = () => {
         <>
           <div className="images">
             <img src={data.coverPic} alt="" className="cover" />
-            <img src={data.profilePic} alt="" className="profilePic" />
+            <img
+              src={
+                data.profilePic ||
+                "https://cdn-icons-png.flaticon.com/256/5987/5987811.png"
+              }
+              alt="profilePicture"
+              className="profilePic"
+            />
           </div>
           <div className="profileContainer">
             <div className="uInfo">
