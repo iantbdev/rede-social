@@ -47,7 +47,6 @@ export const addPost = (req, resp) => {
       postData,
       req.body.comunidade_id || null,
     ];
-
     db.query(q, values, (err, data) => {
       if (err) return resp.status(500).send(err);
 
@@ -74,4 +73,4 @@ export const addPost = (req, resp) => {
       });
     });
   });
-};
+};  d d d
