@@ -22,7 +22,7 @@ export const createCommunity = (req, res) => {
           const comunidadeId = selectResult[0].id;
 
           const q2 =
-            `INSERT INTO usuario_participa_comunidade (usuario_id, comunidade_id,eh_admin) VALUES (?, ?, ?)`;
+            `INSERT INTO usuario_participa_comunidade (usuario_id, comunidade_id,eh_admin) VALUES (?);`;
           const values2 = [userInfo.id, comunidadeId, 1];
 
           db.query(q2, [values2], (err, data) => {
@@ -99,9 +99,9 @@ export const addParticipant = (req, res) => {
     const usuarioId = data[0].id;
 
     const q2 =
-      `INSERT INTO usuario_participa_comunidade (usuario_id, comunidade_id,eh_admin) VALUES (?, ?, ?)`;
+      `INSERT INTO usuario_participa_comunidade (usuario_id, comunidade_id,eh_admin) VALUES (?, ?, ?);`;
     const values = [usuarioId, comunidadeId, 0];
-
+    console.log("Valores:", values);
     db.query(q2, values, (err, result) => {
       if (err) {
         console.error("Erro ao adicionar participante:", err);
