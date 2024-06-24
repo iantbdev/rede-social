@@ -11,9 +11,7 @@ const RightBar = () => {
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
-        const response = await sendRequest.get(
-          `/users/suggestions/${currentUser.id}`
-        );
+        const response = await sendRequest.get(`/users/suggestions/${currentUser.id}?limit=3`);
         setSuggestions(response.data);
       } catch (error) {
         console.error("Erro ao buscar sugestões de usuários:", error);

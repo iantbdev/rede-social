@@ -50,13 +50,14 @@ export const getUsersByName = (req, res) => {
 
 export const getSuggestions = (req, res) => {
   const userId = req.params.id;
+  const limit = parseInt(req.query.limit, 10) || 3; 
 
   const q = `
     SELECT * FROM usuario
-    WHERE id != ? LIMIT 3 
+    WHERE id != ? LIMIT ?; 
   `;
 
-  db.query(q, [userId], (err, data) => {
+  db.query(q, [userId, limit], (err, data) => {
     if (err) {
       console.error("Erro na consulta ao banco de dados:", err);
       return res.status(500).send(err);
