@@ -83,8 +83,11 @@
           }
         }
         .right {
+          width: 30%;
+          display: flex;
           button {
             border: none;
+            height: 40px;
             padding: 5px;
             color: white;
             cursor: pointer;

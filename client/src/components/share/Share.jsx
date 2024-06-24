@@ -1,6 +1,5 @@
 import "./share.scss";
-import Image from "../../assets/4.png";
-
+import Image from "../../assets/music-64.svg";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useQueryClient } from "@tanstack/react-query";
