@@ -9,7 +9,7 @@ const RightBar = () => {
           <div className="user">
             <div className="userInfo">
               <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F1118792732400544893%2F&psig=AOvVaw24vvAnBzBjwxt6Lrk_dcRK&ust=1719161844007000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJj44IvX74YDFQAAAAAdAAAAABAE"
                 alt=""
               />
               <span>Jane Doe</span>
