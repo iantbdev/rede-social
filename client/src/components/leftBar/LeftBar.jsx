@@ -34,7 +34,12 @@ const LeftBar = () => {
           </div>
           <div className="item">
             <img src={Friends} alt="" />
+            <Link
+              to="/communities"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
             <span>Friends</span>
+            </Link>
           </div>
           <div className="item">
             <img src={Groups} alt="" />
@@ -45,32 +50,8 @@ const LeftBar = () => {
               <span>Community</span>
             </Link>
           </div>
-
-          <div className="item">
-            <img src={Watch} alt="" />
-            <span>Watch</span>
-          </div>
         </div>
         <hr />
-        <div className="menu">
-          <span>Your shortcuts</span>
-          <div className="item">
-            <img src={Gallery} alt="" />
-            <span>Gallery</span>
-          </div>
-          <div className="item">
-            <img src={Messages} alt="" />
-            <span>Messages</span>
-          </div>
-        </div>
-        <hr />
-        <div className="menu">
-          <span>Others</span>
-          <div className="item">
-            <img src={Tutorials} alt="" />
-            <span>How to use</span>
-          </div>
-        </div>
       </div>
     </div>
   );
