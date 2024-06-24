@@ -21,3 +21,20 @@ export const getUser = (req, res) => {
     return res.send(info);
   });
 };
+
+export const getSuggestions = (req, res) => {
+  const userId = req.params.id;
+
+  const q = `
+    SELECT * FROM usuario
+    WHERE id != ? LIMIT 3 
+  `;
+
+  db.query(q, [userId], (err, data) => {
+    if (err) {
+      console.error("Erro na consulta ao banco de dados:", err);
+      return res.status(500).send(err);
+    }
+    return res.status(200).send(data);
+  });
+};

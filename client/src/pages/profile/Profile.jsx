@@ -1,5 +1,4 @@
 import "./profile.scss";
-
 import InstagramIcon from "@mui/icons-material/Instagram";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -21,14 +20,19 @@ const Profile = () => {
   const { currentUser } = useContext(AuthContext);
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["user", usuarioId],
     queryFn: () =>
       sendRequest.get("/users/find/" + usuarioId).then((resp) => {
         return resp.data;
       }),
   });
-  const { isLoading: seguidoresIsLoading, data: SeguidoresDados } = useQuery({
-    queryKey: ["usuario_segue_usuario"],
+
+  const {
+    isLoading: seguidoresIsLoading,
+    error: seguidoresError,
+    data: seguidoresData,
+  } = useQuery({
+    queryKey: ["usuario_segue_usuario", usuarioId],
     queryFn: () =>
       sendRequest
         .get("/usuario_segue_usuario?usuario_id_seguindo=" + usuarioId)
@@ -37,10 +41,8 @@ const Profile = () => {
         }),
   });
 
-  console.log(SeguidoresDados);
-
   const handleFollow = async () => {
-    const following = SeguidoresDados.includes(currentUser.id);
+    const following = seguidoresData.includes(currentUser.id);
 
     try {
       if (following) {
@@ -51,34 +53,41 @@ const Profile = () => {
         await sendRequest.post("/usuario_segue_usuario", { usuarioId });
       }
 
-      queryClient.invalidateQueries(["usuario_segue_usuario"]);
+      queryClient.invalidateQueries(["usuario_segue_usuario", usuarioId]);
     } catch (err) {
       console.error("Erro ao seguir/desseguir usuário:", err);
     }
   };
 
-  console.log(data + "dados do perfil:");
-
   return (
     <div className="profile">
       {isLoading ? (
         "loading..."
+      ) : error ? (
+        "Erro ao carregar dados do perfil."
       ) : (
         <>
           <div className="images">
             <img src={data.coverPic} alt="" className="cover" />
-            <img src={data.profilePic} alt="" className="profilePic" />
+            <img
+              src={
+                data.profilePic ||
+                "https://cdn-icons-png.flaticon.com/256/5987/5987811.png"
+              }
+              alt="profilePicture"
+              className="profilePic"
+            />
           </div>
           <div className="profileContainer">
             <div className="uInfo">
               <div className="left">
-                <a href="http://facebook.com">
+                <a href="http://instagram.com">
                   <InstagramIcon fontSize="large" />
                 </a>
-                <a href="http://facebook.com">
+                <a href="http://twitter.com">
                   <TwitterIcon fontSize="large" />
                 </a>
-                <a href="http://facebook.com">
+                <a href="http://pinterest.com">
                   <PinterestIcon fontSize="large" />
                 </a>
               </div>
@@ -92,14 +101,15 @@ const Profile = () => {
                 </div>
                 {seguidoresIsLoading ? (
                   "loading..."
+                ) : seguidoresError ? (
+                  "Erro ao carregar dados de seguidores."
                 ) : usuarioId === currentUser.id ? (
                   <button>Update</button>
                 ) : (
                   <button onClick={handleFollow}>
-                    {" "}
-                    {SeguidoresDados.includes(currentUser.id)
+                    {seguidoresData.includes(currentUser.id)
                       ? "Following"
-                      : "Follow"}{" "}
+                      : "Follow"}
                   </button>
                 )}
               </div>
@@ -109,7 +119,7 @@ const Profile = () => {
               </div>
             </div>
             <Posts />
-          </div>{" "}
+          </div>
         </>
       )}
     </div>
