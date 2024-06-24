@@ -63,7 +63,13 @@ const Post = ({ post }) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={post.profilePic} alt="" />
+            <img
+              src={
+                post.profilePic ||
+                "https://cdn-icons-png.flaticon.com/256/5987/5987811.png"
+              }
+              alt=""
+            />
             <div className="details">
               <Link
                 to={`/profile/${post.id}`}

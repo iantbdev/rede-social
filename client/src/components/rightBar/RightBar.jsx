@@ -15,7 +15,6 @@ const RightBar = () => {
           `/users/suggestions/${currentUser.id}`
         );
         setSuggestions(response.data);
-        console.log("Outros users: ", response.data);
       } catch (error) {
         console.error("Erro ao buscar sugestões de usuários:", error);
       }
