@@ -22,6 +22,32 @@ export const getUser = (req, res) => {
   });
 };
 
+export const getUsersByName = (req, res) => {
+  console.log("Buscando usuário com nome:", req.query.name);
+  
+  const q = `SELECT * FROM usuario WHERE username LIKE ?;`;
+
+  const userName = `%${req.query.name}%`;
+
+  console.log("Buscando usuário com nome:", userName);
+
+  db.query(q, [userName], (err, data) => {
+    if (err) {
+      console.error("Erro na consulta ao banco de dados:", err);
+      return res.status(500).send(err);
+    }
+    if (data.length === 0)
+      return res.status(404).send("Usuário não encontrado.");
+
+    // Map over the data array to exclude the senha property from each user object
+    const usersInfo = data.map(({ senha, ...info }) => info);
+
+    return res.send(usersInfo);
+  });
+};
+
+
+
 export const getSuggestions = (req, res) => {
   const userId = req.params.id;
 
