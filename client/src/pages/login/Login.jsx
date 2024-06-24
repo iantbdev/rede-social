@@ -31,7 +31,7 @@ const Login = () => {
     <div className="login">
       <div className="card">
         <div className="left">
-          <h1>TuneTown</h1>
+        <h1>E C H O </h1>
           <p>Compartilhe o que você anda ouvindo com seus amigos.</p>
           <span>Não tem uma conta?</span>
           <Link to="/register">
