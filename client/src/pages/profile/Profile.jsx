@@ -1,10 +1,8 @@
 import "./profile.scss";
-import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
+
 import InstagramIcon from "@mui/icons-material/Instagram";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -12,74 +10,108 @@ import Posts from "../../components/posts/Posts";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { sendRequest } from "../../axios";
 import { useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext";
 
 const Profile = () => {
-  //não funciona ainda
   const location = useLocation();
-  const usuarioId = location.pathname.split("/")[2];
+  const usuarioId = parseInt(location.pathname.split("/")[2]);
+  const queryClient = useQueryClient();
+
+  const { currentUser } = useContext(AuthContext);
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["usuario", usuarioId],
+    queryKey: ["user"],
     queryFn: () =>
       sendRequest.get("/users/find/" + usuarioId).then((resp) => {
         return resp.data;
       }),
   });
+  const { isLoading: seguidoresIsLoading, data: SeguidoresDados } = useQuery({
+    queryKey: ["usuario_segue_usuario"],
+    queryFn: () =>
+      sendRequest
+        .get("/usuario_segue_usuario?usuario_id_seguindo=" + usuarioId)
+        .then((resp) => {
+          return resp.data;
+        }),
+  });
 
-  const handleFollow = () => {};
+  console.log(SeguidoresDados);
+
+  const handleFollow = async () => {
+    const following = SeguidoresDados.includes(currentUser.id);
+
+    try {
+      if (following) {
+        await sendRequest.delete(
+          `/usuario_segue_usuario?usuarioId=${usuarioId}`
+        );
+      } else {
+        await sendRequest.post("/usuario_segue_usuario", { usuarioId });
+      }
+
+      queryClient.invalidateQueries(["usuario_segue_usuario"]);
+    } catch (err) {
+      console.error("Erro ao seguir/desseguir usuário:", err);
+    }
+  };
 
   console.log(data + "dados do perfil:");
 
   return (
     <div className="profile">
-      <div className="images">
-        <img src="" alt="" className="cover" />
-        <img
-          src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
-          alt=""
-          className="profilePic"
-        />
-      </div>
-      <div className="profileContainer">
-        <div className="uInfo">
-          <div className="left">
-            <a href="http://facebook.com">
-              <FacebookTwoToneIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <InstagramIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <TwitterIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <LinkedInIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <PinterestIcon fontSize="large" />
-            </a>
+      {isLoading ? (
+        "loading..."
+      ) : (
+        <>
+          <div className="images">
+            <img src={data.coverPic} alt="" className="cover" />
+            <img src={data.profilePic} alt="" className="profilePic" />
           </div>
-          <div className="center">
-            <span>Jane Doe</span>
-            <div className="info">
-              <div className="item">
-                <PlaceIcon />
-                <span>USA</span>
+          <div className="profileContainer">
+            <div className="uInfo">
+              <div className="left">
+                <a href="http://facebook.com">
+                  <InstagramIcon fontSize="large" />
+                </a>
+                <a href="http://facebook.com">
+                  <TwitterIcon fontSize="large" />
+                </a>
+                <a href="http://facebook.com">
+                  <PinterestIcon fontSize="large" />
+                </a>
               </div>
-              <div className="item">
-                <LanguageIcon />
-                <span>lama.dev</span>
+              <div className="center">
+                <span>{data.nome_completo}</span>
+                <div className="info">
+                  <div className="item">
+                    <LanguageIcon />
+                    <span>spotify.com</span>
+                  </div>
+                </div>
+                {seguidoresIsLoading ? (
+                  "loading..."
+                ) : usuarioId === currentUser.id ? (
+                  <button>Update</button>
+                ) : (
+                  <button onClick={handleFollow}>
+                    {" "}
+                    {SeguidoresDados.includes(currentUser.id)
+                      ? "Following"
+                      : "Follow"}{" "}
+                  </button>
+                )}
+              </div>
+              <div className="right">
+                <EmailOutlinedIcon />
+                <MoreVertIcon />
               </div>
             </div>
-            <button onClick={handleFollow}>follow</button>
-          </div>
-          <div className="right">
-            <EmailOutlinedIcon />
-            <MoreVertIcon />
-          </div>
-        </div>
-        <Posts />
-      </div>
+            <Posts />
+          </div>{" "}
+        </>
+      )}
     </div>
   );
 };

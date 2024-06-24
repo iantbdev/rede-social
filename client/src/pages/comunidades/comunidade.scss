@@ -1,0 +1,99 @@
+@import "../../style.scss";
+
+.comunidade {
+  @include themify($themes) {
+    padding: 20px 70px;
+    background-color: themed("bgSoft");
+    color: themed("textColor");
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    @include mobile {
+      padding: 10px;
+    }
+
+    @include tablet {
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .communityList {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .communityItem {
+        padding: 20px;
+        background-color: themed("bg");
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+          font-size: 1.5rem;
+          margin-bottom: 10px;
+        }
+
+        p {
+          font-size: 1rem;
+          margin-bottom: 10px;
+          line-height: 1.5;
+        }
+
+        span {
+          font-size: 0.9rem;
+
+          margin-bottom: 20px;
+          display: block;
+        }
+
+        form {
+          display: flex;
+          gap: 10px;
+
+          input {
+            flex: 1;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid themed("borderColor");
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+
+            &:focus {
+              border-color: themed("primaryColor");
+              outline: none;
+              box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            }
+          }
+
+          button {
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background-color: themed("bgSoft");
+            color: #c26801;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+            &:hover {
+              background-color: darken(themed("bg"), 10%);
+            }
+          }
+        }
+      }
+    }
+  }
+}

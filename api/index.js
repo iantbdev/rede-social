@@ -3,8 +3,10 @@ import userRoutes from "./routes/users.js";
 import postsRoutes from "./routes/posts.js";
 import likesRoutes from "./routes/likes.js";
 import commentsRoutes from "./routes/comments.js";
+import relationshipRoutes from "./routes/relationship.js";
 import authRoutes from "./routes/auth.js";
 import cookieParser from "cookie-parser";
+import communityRoutes from "./routes/community.js";
 import cors from "cors";
 import multer from "multer";
 const app = express();
@@ -31,7 +33,21 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    // Allowed audio MIME types
+    const filetypes = /audio\/(mpeg|mp3|wav|ogg)/;
+    // Check MIME type
+    const mimetype = filetypes.test(file.mimetype);
+
+    if (mimetype) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only audio files are allowed!"), false);
+    }
+  },
+});
 
 app.post("/api/upload", upload.single("file"), (req, resp) => {
   const file = req.file;
@@ -42,6 +58,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/likes", likesRoutes);
 app.use("/api/comments", commentsRoutes);
+app.use("/api/communities", communityRoutes);
+app.use("/api/usuario_segue_usuario", relationshipRoutes);
 app.use("/api/auth", authRoutes);
 
 app.listen(8800, () => {

@@ -91,6 +91,25 @@
             background-color: #5271ff;
             border-radius: 3px;
           }
+          // Estilização do select
+
+          select {
+            width: 100%;
+            display: flex;
+            margin: 0px 10px 10px 0px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: themed("bg");
+            color: themed("textColor");
+            font-size: 14px;
+
+            &:focus {
+              border-color: darken(#ccc, 20%);
+              outline: none;
+              box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            }
+          }
         }
       }
     }

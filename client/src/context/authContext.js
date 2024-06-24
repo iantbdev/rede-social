@@ -4,9 +4,10 @@ import axios from "axios";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("usuario")) || null
-  );
+  const [currentUser, setCurrentUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   const login = async (inputs) => {
     const resp = await axios.post(
@@ -16,16 +17,22 @@ export const AuthContextProvider = ({ children }) => {
         withCredentials: true,
       }
     );
-
     setCurrentUser(resp.data);
+    localStorage.setItem("user", JSON.stringify(resp.data));
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem("user");
+    window.location.href = "/login";
   };
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(currentUser));
+    console.log("Current user state updated.");
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login }}>
+    <AuthContext.Provider value={{ currentUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

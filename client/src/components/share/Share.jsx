@@ -1,67 +1,96 @@
 import "./share.scss";
-import Image from "../../assets/img.png";
-import Map from "../../assets/map.png";
-import Friend from "../../assets/friend.png";
-import { useContext, useState } from "react";
+import Image from "../../assets/4.png";
+
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { sendRequest } from "../../axios";
+import MusicPlayer from "../musicPlayer/musicPlayer";
 
 const Share = () => {
   const [file, setFile] = useState(null);
-  const [cont, setCont] = useState("");
+  const [content, setContent] = useState("");
+  const [error, setError] = useState("");
+  const [comunidadeId, setComunidadeId] = useState("");
+  const [comunidades, setComunidades] = useState([]); // Estado para armazenar as opções de comunidades
+
   const { currentUser } = useContext(AuthContext);
   const queryClient = useQueryClient();
 
-  const upload = async () => {
+  //para teste
+  useEffect(() => {
+    const fetchComunidades = async () => {
+      try {
+        const response = await sendRequest.get(
+          `/communities/user/${currentUser?.id}`
+        );
+        setComunidades(response.data); // Define as comunidades recebidas do servidor
+      } catch (error) {
+        console.error("Erro ao buscar comunidades:", error);
+      }
+    };
+
+    fetchComunidades();
+  }, []);
+
+  const uploadFile = async () => {
+    if (!file) return "";
+    console.log(file);
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const resp = await sendRequest.post("/upload", formData);
-      return resp.data; // (Assume que a URL da imagem está no campo 'data')
+      const response = await sendRequest.post("/upload", formData);
+      console.log(response);
+      return response.data;
     } catch (err) {
-      console.log(err);
+      console.error("Upload failed:", err);
+      setError("Failed to upload file.");
+      return "";
     }
   };
 
-  const handleClick = async (e) => {
+  const handleShareClick = async (e) => {
     e.preventDefault();
-    let imgUrl = "";
-    if (file) imgUrl = await upload();
-
+    setError("");
+    let songUrl = await uploadFile();
+    if (file && !songUrl) return;
     try {
-      await sendRequest.post("/posts", {
-        conteudo: cont,
-        link: imgUrl,
+      console.log(content);
+      console.log(songUrl);
+      const response = await sendRequest.post("/posts", {
+        conteudo: content,
+        link: songUrl,
+        comunidade_id: comunidadeId,
       });
-
-      // Invalidate and refetch posts
+      console.log(response);
+      // refetch posts
       queryClient.invalidateQueries(["posts"]);
-      setCont("");
+      setContent("");
       setFile(null);
+      setComunidadeId("");
     } catch (error) {
-      console.error("Erro ao criar post:", error);
+      console.error("Error oa criar post", error);
+      setError("Falhou em criar post.");
     }
   };
 
   return (
     <div className="share">
+      {error && <div className="error">{error}</div>}{" "}
       <div className="container">
         <div className="top">
           <div className="left">
             <img src={currentUser.profilePic} alt="" />
             <input
               type="text"
-              placeholder={`O que você anda ouvindo, ${currentUser.name}?`}
-              onChange={(e) => setCont(e.target.value)}
-              value={cont}
+              placeholder={`O que você anda ouvindo, ${currentUser.nome_completo}?`}
+              onChange={(e) => setContent(e.target.value)}
+              value={content}
             />
           </div>
-          <div className="right">
-            {file && (
-              <img className="file" alt="" src="URL.createObjectURL(file)" />
-            )}
-          </div>
+          {file && (
+            <MusicPlayer playlist_src={URL.createObjectURL(file)}></MusicPlayer>
+          )}
         </div>
         <hr />
         <div className="bottom">
@@ -70,25 +99,28 @@ const Share = () => {
               type="file"
               id="file"
               style={{ display: "none" }}
-              onChange={(e) => setFile(e.target.files[0])} //parte de arquivos
+              onChange={(e) => setFile(e.target.files[0])}
             />
             <label htmlFor="file">
               <div className="item">
                 <img src={Image} alt="" />
-                <span>Add Image</span>
+                <span>Add Music</span>
               </div>
             </label>
-            <div className="item">
-              <img src={Map} alt="" />
-              <span>Add Place</span>
-            </div>
-            <div className="item">
-              <img src={Friend} alt="" />
-              <span>Tag Friends</span>
-            </div>
           </div>
           <div className="right">
-            <button onClick={handleClick}>Share</button>
+            <select
+              value={comunidadeId}
+              onChange={(e) => setComunidadeId(e.target.value)}
+            >
+              <option value="">Selecionar Comunidade</option>
+              {comunidades.map((comunidade) => (
+                <option key={comunidade.id} value={comunidade.id}>
+                  {comunidade.nome}
+                </option>
+              ))}
+            </select>
+            <button onClick={handleShareClick}>Share</button>
           </div>
         </div>
       </div>

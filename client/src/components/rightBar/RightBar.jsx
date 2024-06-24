@@ -9,10 +9,10 @@ const RightBar = () => {
           <div className="user">
             <div className="userInfo">
               <img
-                src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F1118792732400544893%2F&psig=AOvVaw24vvAnBzBjwxt6Lrk_dcRK&ust=1719161844007000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJj44IvX74YDFQAAAAAdAAAAABAE"
+                src="https://cdn-icons-png.flaticon.com/256/5987/5987811.png"
                 alt=""
               />
-              <span>Jane Doe</span>
+              <span>David</span>
             </div>
             <div className="buttons">
               <button>follow</button>
@@ -22,10 +22,10 @@ const RightBar = () => {
           <div className="user">
             <div className="userInfo">
               <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src="https://cdn-icons-png.flaticon.com/256/5987/5987811.png"
                 alt=""
               />
-              <span>Jane Doe</span>
+              <span>Josefa</span>
             </div>
             <div className="buttons">
               <button>follow</button>
@@ -34,54 +34,53 @@ const RightBar = () => {
           </div>
         </div>
         <div className="item">
-          <span>Latest Activities</span>
+          <span>Creators' Suggestions</span>
           <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <p>
-                <span>Jane Doe</span> changed their cover picture
-              </p>
+            <div>
+              <iframe
+                width="100%"
+                height="300"
+                scrolling="no"
+                frameBorder="no"
+                allow="autoplay"
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/496641684&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+                title="SoundCloud Player"
+              ></iframe>
+              <div
+                style={{
+                  fontSize: "10px",
+                  color: "#cccccc",
+                  lineBreak: "anywhere",
+                  wordBreak: "normal",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  fontFamily:
+                    "Interstate, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Garuda, Verdana, Tahoma, sans-serif",
+                  fontWeight: 100,
+                }}
+              >
+                <a
+                  href="https://soundcloud.com/user-272592510"
+                  title="Video Game OSTs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#cccccc", textDecoration: "none" }}
+                >
+                  Video Game OSTs
+                </a>{" "}
+                ·{" "}
+                <a
+                  href="https://soundcloud.com/user-272592510/mario-kart-wii-rainbow-road"
+                  title="Mario Kart Wii - Rainbow Road"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#cccccc", textDecoration: "none" }}
+                >
+                  Mario Kart Wii - Rainbow Road
+                </a>
+              </div>
             </div>
-            <span>1 min ago</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <p>
-                <span>Jane Doe</span> changed their cover picture
-              </p>
-            </div>
-            <span>1 min ago</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <p>
-                <span>Jane Doe</span> changed their cover picture
-              </p>
-            </div>
-            <span>1 min ago</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <p>
-                <span>Jane Doe</span> changed their cover picture
-              </p>
-            </div>
-            <span>1 min ago</span>
           </div>
         </div>
         <div className="item">
@@ -89,111 +88,31 @@ const RightBar = () => {
           <div className="user">
             <div className="userInfo">
               <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src="https://cdn-icons-png.flaticon.com/256/5987/5987811.png"
                 alt=""
               />
               <div className="online" />
-              <span>Jane Doe</span>
+              <span>Theodore</span>
             </div>
           </div>
           <div className="user">
             <div className="userInfo">
               <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src="https://cdn-icons-png.flaticon.com/256/5987/5987811.png"
                 alt=""
               />
               <div className="online" />
-              <span>Jane Doe</span>
+              <span>Simon</span>
             </div>
           </div>
           <div className="user">
             <div className="userInfo">
               <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src="https://cdn-icons-png.flaticon.com/256/5987/5987811.png"
                 alt=""
               />
               <div className="online" />
-              <span>Jane Doe</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <div className="online" />
-              <span>Jane Doe</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <div className="online" />
-              <span>Jane Doe</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <div className="online" />
-              <span>Jane Doe</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <div className="online" />
-              <span>Jane Doe</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <div className="online" />
-              <span>Jane Doe</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <div className="online" />
-              <span>Jane Doe</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <div className="online" />
-              <span>Jane Doe</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-              <div className="online" />
-              <span>Jane Doe</span>
+              <span>Alvin</span>
             </div>
           </div>
         </div>
