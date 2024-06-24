@@ -34,7 +34,6 @@ const Navbar = () => {
     const searchTerm = e.target.value;
     try {
       const response = await axios.get(`http://localhost:8800/api/users/findByName?name=${searchTerm}`);
-      console.log(response.data);
       setSearchResults(response.data);
       setShowDropdown(true);
     } catch (err) {

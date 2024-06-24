@@ -34,12 +34,10 @@ const Share = () => {
 
   const uploadFile = async () => {
     if (!file) return "";
-    console.log(file);
     try {
       const formData = new FormData();
       formData.append("file", file);
       const response = await sendRequest.post("/upload", formData);
-      console.log(response);
       return response.data;
     } catch (err) {
       console.error("Upload failed:", err);
@@ -54,14 +52,11 @@ const Share = () => {
     let songUrl = await uploadFile();
     if (file && !songUrl) return;
     try {
-      console.log(content);
-      console.log(songUrl);
       const response = await sendRequest.post("/posts", {
         conteudo: content,
         link: songUrl,
         comunidade_id: comunidadeId,
       });
-      console.log(response);
       // refetch posts
       queryClient.invalidateQueries(["posts"]);
       setContent("");

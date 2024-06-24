@@ -1,32 +1,32 @@
-import "./followers.scss";
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../context/authContext";
+import "./participants.scss";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { sendRequest } from "../../axios";
 import { Link } from "react-router-dom";
 
-const Followers = () => {
-  const { currentUser } = useContext(AuthContext);
-  const [suggestions, setSuggestions] = useState([]);
+const Participants = () => {
+  const [participants, setParticipants] = useState([]);
+  const { comunidadeId } = useParams();
 
   useEffect(() => {
-    const fetchSuggestions = async () => {
+    const fetchParticipants = async () => {
       try {
-        const response = await sendRequest.get(`/users/suggestions/${currentUser.id}?limit=10`);
-        setSuggestions(response.data);
+        const response = await sendRequest.get(`/communities/users/${comunidadeId}?limit=10`);
+        setParticipants(response.data);
       } catch (error) {
-        console.error("Erro ao buscar sugestões de usuários:", error);
+        console.error("Erro ao buscar participantes da comunidade", error);
       }
     };
 
-    fetchSuggestions();
-  }, [currentUser.id]);
+    fetchParticipants();
+  }, [comunidadeId]);
 
   return (
     <div className="rightBar">
       <div className="container">
         <div className="item">
-          <span>Followers</span>
-          {suggestions.map((usuario) => (
+          <span>Participants</span>
+          {participants.map((usuario) => (
             <div className="user">
               <div className="userInfo">
                 <img
@@ -54,4 +54,4 @@ const Followers = () => {
   );
 };
 
-export default Followers;
+export default Participants;

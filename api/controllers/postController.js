@@ -31,7 +31,6 @@ export const getPosts = (req, resp) => {
 };
 
 export const addPost = (req, resp) => {
-  console.log("ei");
   const token = req.cookies.accessToken;
   if (!token) return resp.status(401).send("Não está logado.");
 
@@ -59,7 +58,6 @@ export const addPost = (req, resp) => {
 
         // Check if there's a link for musica to insert
         if (req.body.link) {
-          console.log(req.body.link);
           const insertMusicQuery = `INSERT INTO musica (postagem_id, link) VALUES (?, ?);`;
           const musicValues = [postId, req.body.link];
 
@@ -68,7 +66,6 @@ export const addPost = (req, resp) => {
             return resp.status(200).send("Post e música criados com sucesso!");
           });
         } else {
-          console.log("NOPE!  ");
           return resp.status(200).send("Post criado com sucesso!");
         }
       });
