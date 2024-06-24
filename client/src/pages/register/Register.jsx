@@ -33,7 +33,7 @@ const Register = () => {
     <div className="register">
       <div className="card">
         <div className="left">
-          <h1>TuneTown.</h1>
+          <h1>E C H O </h1>
           <p>
             Estamos muito felizes por você se juntar a nós em nossa comunidade
             de amantes da música! TuneTown é o lugar onde você pode compartilhar

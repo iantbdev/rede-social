@@ -108,7 +108,7 @@ const Navbar = () => {
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
         <div className="user">
-          <img src={currentUser.profilePic} alt="" />
+          <img src={currentUser.profilePic || "https://cdn-icons-png.flaticon.com/256/5987/5987811.png" } alt="" />
         </div>
         <LogoutOutlinedIcon
           onClick={handleLogout}

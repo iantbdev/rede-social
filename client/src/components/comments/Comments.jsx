@@ -46,7 +46,7 @@ const Comments = ({ id_postagem }) => {
   return (
     <div className="comments">
       <div className="write">
-        <img src={currentUser.profilePic} alt="" />
+        <img src={currentUser.profilePic || "https://cdn-icons-png.flaticon.com/256/5987/5987811.png" } alt="" />
         <input
           type="text"
           placeholder="Escreva um comentário"

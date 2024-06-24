@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import "./stories.scss";
 import { AuthContext } from "../../context/authContext";
+import  PanelImg from "../../assets/listen.jpeg";
 
 const Stories = () => {
   const { currentUser } = useContext(AuthContext);
@@ -28,7 +29,10 @@ const Stories = () => {
   return (
     <div className="stories">
       <div className="story">
-        <img src={currentUser.profilePic} alt="" />
+      <img 
+        src={currentUser.coverPic || PanelImg} 
+        alt="" 
+      />
         <span>{currentUser.nome_completo}</span>
       </div>
       {stories.map((story) => (

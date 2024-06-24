@@ -24,7 +24,7 @@ const LeftBar = () => {
       <div className="container">
         <div className="menu">
           <div className="user">
-            <img src={currentUser.profilePic} alt="" />
+            <img src={currentUser.profilePic || "https://cdn-icons-png.flaticon.com/256/5987/5987811.png" } alt="" />
             <Link
               to={`/profile/${currentUser.id}`}
               style={{ textDecoration: "none", color: "inherit" }}

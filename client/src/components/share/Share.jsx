@@ -80,7 +80,9 @@ const Share = () => {
       <div className="container">
         <div className="top">
           <div className="left">
-            <img src={currentUser.profilePic} alt="" />
+            <img src={currentUser.profilePic  ||
+                    "https://cdn-icons-png.flaticon.com/256/5987/5987811.png"
+                  } alt="" />
             <input
               type="text"
               placeholder={`O que você anda ouvindo, ${currentUser.nome_completo}?`}
