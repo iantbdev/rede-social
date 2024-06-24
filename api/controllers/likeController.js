@@ -10,7 +10,7 @@ export const getLiked = (req, res) => {
         if (err) return res.status(403).send("Token não é válido.");
     
         //mostra se o usuario logado deu like
-        const q = 'SELECT uc.`like` FROM usuario_curte uc WHERE uc.postagem_id = ? AND uc.usuario_id = ?';
+        const q = `SELECT uc.\`like\` FROM usuario_curte uc WHERE uc.postagem_id = ? AND uc.usuario_id = ?`;
         
         
         db.query(q, [req.params.postagem_id, userInfo.id], (err, data) => {
@@ -29,13 +29,14 @@ export const getLikes = (req, res) => {
       if (err) return res.status(403).send("Token não é válido.");
   
       //mostra o total de likes
-      const q = 'SELECT count(uc.`like`) as likes FROM usuario_curte uc ' +
-                'INNER JOIN postagem p ON p.id_postagem = uc.postagem_id ' +
-                'WHERE uc.like IS TRUE AND uc.postagem_id = ?;';
+      const q = `SELECT count(uc.\`like\`) as likes
+                FROM usuario_curte uc
+                INNER JOIN postagem p ON p.id_postagem = uc.postagem_id
+                WHERE uc.\`like\` IS TRUE AND uc.postagem_id = ?;`;
       
-      db.query(q, [req.query.postagem_id], (err, data) => {
+      db.query(q, [req.params.postagem_id], (err, data) => {
         if (err) return res.status(500).send(err);
-        return res.status(200).send(req.params.postagem_id);
+        return res.status(200).send(data);
       });
     });
   };
@@ -58,7 +59,7 @@ export const addLike = (req, res) => {
 
           if (result.length > 0) {
               // Like already exists, update it
-              const updateQuery = 'UPDATE usuario_curte SET `like` = ? WHERE usuario_id = ? AND postagem_id = ?;';
+              const updateQuery = `UPDATE usuario_curte SET \`like\` = ? WHERE usuario_id = ? AND postagem_id = ?;`;
               const updateValues = [req.body.like, userInfo.id, req.body.postagem_id];
 
               db.query(updateQuery, updateValues, (err, data) => {
@@ -67,7 +68,7 @@ export const addLike = (req, res) => {
               });
           } else {
               // Like does not exist, insert new like
-              const insertQuery = 'INSERT INTO usuario_curte (usuario_id, postagem_id, `like`) VALUES (?, ?, ?);';
+              const insertQuery = `INSERT INTO usuario_curte (usuario_id, postagem_id,\`like\`) VALUES (?, ?, ?);`;
               const insertValues = [userInfo.id, req.body.postagem_id, req.body.like];
               db.query(insertQuery, insertValues, (err, data) => {
                   if (err) return res.status(500).send(err);
