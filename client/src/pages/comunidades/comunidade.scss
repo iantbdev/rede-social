@@ -93,6 +93,24 @@
             }
           }
         }
+        .participantsInfo {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        
+          .participants {
+            display: flex;
+            justify-content: flex-end; 
+            align-items: center;
+            gap: 10px;
+        
+            img {
+              width: 40px;
+              height: auto;
+              margin-bottom: 10px; 
+            }
+          }
+        }
       }
     }
   }

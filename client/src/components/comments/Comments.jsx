@@ -13,8 +13,7 @@ const Comments = ({ id_postagem }) => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["comments", id_postagem],
     queryFn: () =>
-      sendRequest.get(`/comments?id_postagem=${id_postagem}`).then((resp) => {
-        console.log(resp.data + "dados");
+        sendRequest.get(`/comments?id_postagem=${id_postagem}`).then((resp) => {
         return resp.data;
       }),
   });
