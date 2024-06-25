@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "memfs": "^4.9.3"
+  }
+}
