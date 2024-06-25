@@ -36,7 +36,7 @@ export const addComments = (req, resp) => {
     if (err) return resp.status(403).send("Token não é válido.");
 
     const q2 = `
-      INSERT INTO usuario_comenta_postagem (c_conteudo, data, usuario_id, postagem_id_postagem)
+      INSERT INTO usuario_comenta_postagem (conteudo, data, usuario_id, postagem_id_postagem)
       VALUES (?, ?, ?, ?)
     `;
     const values = [
