@@ -58,10 +58,10 @@ const Comments = ({ id_postagem }) => {
         ? "loading"
         : data.map((usuario_comenta_postagem) => (
             <div className="comment">
-              <img src={usuario_comenta_postagem.profilePic || "https://cdn-icons-png.flaticon.com/256/5987/5987811.png" } alt="" />
+              <img src={usuario_comenta_postagem.profilePic} alt="" />
               <div className="info">
                 <span>{usuario_comenta_postagem.nome_completo}</span>
-                <p>{usuario_comenta_postagem.conteudo}</p>
+                <p>{usuario_comenta_postagem.c_conteudo}</p>
               </div>
               <span className="date">
                 {" "}
