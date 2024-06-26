@@ -23,7 +23,6 @@ export const register = (req, resp) => {
       req.body.nome_completo,
       req.body.data_de_nascimento,
     ];
-
     db.query(q, [values], (err, data) => {
       if (err) return resp.status(500).send(err);
       return resp.status(200).send("Usuário foi criado!");

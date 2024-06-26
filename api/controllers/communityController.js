@@ -11,7 +11,6 @@ export const createCommunity = (req, res) => {
 
     const q1 = "INSERT INTO comunidade (`nome`) VALUE (?)";
     const values = [req.body.nome];
-    console.log("Valores:", values);
 
     db.query(q1, values, (err, data) => {
       if (err) return resp.status(500).send(err);
@@ -22,8 +21,8 @@ export const createCommunity = (req, res) => {
           const comunidadeId = selectResult[0].id;
 
           const q2 =
-            `INSERT INTO usuario_participa_comunidade (usuario_id, comunidade_id,eh_admin) VALUES (?);`;
-          const values2 = [userInfo.id, comunidadeId, 1];
+            `INSERT INTO usuario_participa_comunidade (usuario_id, comunidade_id) VALUES (?);`;
+          const values2 = [userInfo.id, comunidadeId];
 
           db.query(q2, [values2], (err, data) => {
             if (err) return res.status(500).send(err);
@@ -52,7 +51,6 @@ export const getUserCommunities = (req, res) => {
 export const getUserCount = (req, res) => {
   const { comunidadeId } = req.params; // Corrected line
 
-  console.log(comunidadeId);
 
   const q = `SELECT count(u.id) as userCount FROM usuario u
         INNER JOIN usuario_participa_comunidade upc ON u.id = upc.usuario_id WHERE upc.comunidade_id = ?;`;
@@ -99,9 +97,8 @@ export const addParticipant = (req, res) => {
     const usuarioId = data[0].id;
 
     const q2 =
-      `INSERT INTO usuario_participa_comunidade (usuario_id, comunidade_id,eh_admin) VALUES (?, ?, ?);`;
-    const values = [usuarioId, comunidadeId, 0];
-    console.log("Valores:", values);
+      `INSERT INTO usuario_participa_comunidade (usuario_id, comunidade_id) VALUES (?, ?);`;
+    const values = [usuarioId, comunidadeId];
     db.query(q2, values, (err, result) => {
       if (err) {
         console.error("Erro ao adicionar participante:", err);

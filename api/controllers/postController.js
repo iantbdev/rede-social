@@ -31,6 +31,7 @@ export const getPosts = (req, resp) => {
 };
 
 export const addPost = (req, resp) => {
+  console.log('req.body', req.body)
   const token = req.cookies.accessToken;
   if (!token) return resp.status(401).send("Não está logado.");
 
@@ -55,12 +56,11 @@ export const addPost = (req, resp) => {
       db.query(lastIdQuery, (err, selectResult) => {
         if (err) return resp.status(500).send(err);
         const postId = selectResult[0].id;
-
         // Check if there's a link for musica to insert
         if (req.body.link) {
-          const insertMusicQuery = `INSERT INTO musica (postagem_id, link) VALUES (?, ?);`;
-          const musicValues = [postId, req.body.link];
-
+          console.log("Inserindo música")
+          const insertMusicQuery = `INSERT INTO musica (postagem_id, usuario_id, link) VALUES (?, ?, ?);`;
+          const musicValues = [postId, userInfo.id, req.body.link];
           db.query(insertMusicQuery, musicValues, (err, musicResult) => {
             if (err) return resp.status(500).send(err);
             return resp.status(200).send("Post e música criados com sucesso!");
