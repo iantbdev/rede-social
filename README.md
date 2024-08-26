@@ -21,5 +21,4 @@ cd client
 
 
 # OBS
-Por algum motivo, a postagem de musica so funciona no google chrome (ou pelo menos nao funciona no firefox).
-Então se for testar, use o google chrome. (Também é possivel que postar musica só funcione na segunda tentativa, não sei o motivo disso)
+Postagem de música não funciona no FireFox.
