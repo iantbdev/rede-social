@@ -14,6 +14,11 @@ e
 cd client
 `npm start`
 
+# tela inicial
+
+![image](https://github.com/user-attachments/assets/cf25b3df-4c03-4c72-8d51-5aecb42063d5)
+
+
 
 # OBS
 Por algum motivo, a postagem de musica so funciona no google chrome (ou pelo menos nao funciona no firefox).
